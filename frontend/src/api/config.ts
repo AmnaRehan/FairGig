@@ -5,7 +5,7 @@ const getAuthHeaders = () => ({
 });
 
 // export const authAPI = axios.create({ baseURL: 'http://localhost:8000' });
-export const authAPI = axios.create({ baseURL: 'https://fairgig-auth-oo5d.onrender.com' });
+export const authAPI = axios.create({ baseURL: 'https://fairgig-auth-5mtg.onrender.com' });
 // export const earningsAPI = axios.create({ baseURL: 'http://localhost:8001' });
 export const earningsAPI = axios.create({ baseURL: 'https://fairgig-earnings-hqyc.onrender.com' });
 //export const anomalyAPI = axios.create({ baseURL: 'http://localhost:8002' });
