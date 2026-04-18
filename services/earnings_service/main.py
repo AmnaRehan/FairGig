@@ -64,14 +64,37 @@ def get_db():
         db.close()
 
 async def get_worker_id(authorization: str = Header(None)):
+    print("\n==== AUTH DEBUG START ====")
+    print("AUTH HEADER:", authorization)
+    print("AUTH SERVICE URL:", AUTH_SERVICE_URL)
+
     if not authorization:
         raise HTTPException(status_code=401, detail="Authorization header missing")
-    async with httpx.AsyncClient() as client:
-        r = await client.get(f"{AUTH_SERVICE_URL}/auth/verify-token",
-            headers={"Authorization": authorization})
+
+    url = f"{AUTH_SERVICE_URL}/auth/verify-token"
+    print("CALLING:", url)
+
+    try:
+        async with httpx.AsyncClient(timeout=20) as client:
+            r = await client.get(
+                url,
+                headers={"Authorization": authorization}
+            )
+
+        print("AUTH RESPONSE STATUS:", r.status_code)
+        print("AUTH RESPONSE BODY:", r.text)
+
+    except Exception as e:
+        print("AUTH SERVICE ERROR:", str(e))
+        raise HTTPException(status_code=500, detail=f"Auth service unreachable: {e}")
+
     if r.status_code != 200:
-        raise HTTPException(status_code=401, detail="Invalid token")
+        raise HTTPException(status_code=401, detail=f"Invalid token: {r.text}")
+
     data = r.json()
+    print("AUTH SUCCESS:", data)
+    print("==== AUTH DEBUG END ====\n")
+
     return data["user_id"], data["role"]
 
 @app.post("/earnings/", status_code=201)
