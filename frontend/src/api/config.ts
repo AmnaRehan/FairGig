@@ -4,8 +4,8 @@ const getAuthHeaders = () => ({
   Authorization: `Bearer ${localStorage.getItem('token')}`
 });
 
-// export const authAPI = axios.create({ baseURL: 'http://localhost:8000' });
-export const authAPI = axios.create({ baseURL: 'https://fairgig-auth-g05f.onrender.com' });
+export const authAPI = axios.create({ baseURL: 'http://localhost:8000' });
+// export const authAPI = axios.create({ baseURL: 'https://fairgig-auth-g05f.onrender.com' });
 // export const earningsAPI = axios.create({ baseURL: 'http://localhost:8001' });
 export const earningsAPI = axios.create({ baseURL: 'https://fairgig-earnings-hqyc.onrender.com' });
 //export const anomalyAPI = axios.create({ baseURL: 'http://localhost:8002' });
