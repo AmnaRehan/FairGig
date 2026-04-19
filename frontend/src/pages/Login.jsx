@@ -137,31 +137,6 @@ export default function Login() {
           <div style={{ flex: 1, height: '0.5px', background: 'rgba(148,163,184,0.12)' }} />
         </div>
 
-        {/* demo accounts */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {DEMO.map(d => (
-            <div key={d.role} className="fg-demo"
-              onClick={() => { setEmail(d.email); setPassword('demo123'); }}
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '9px 14px', borderRadius: 10,
-                border: '1px solid rgba(148,163,184,0.08)',
-                background: 'rgba(2,6,23,0.4)',
-                transition: 'all 0.18s ease',
-              }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{
-                  width: 26, height: 26, borderRadius: 8,
-                  background: `${d.color}18`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13,
-                }}>{d.icon}</span>
-                <span style={{ fontSize: 12, fontWeight: 600, color: d.color }}>{d.role}</span>
-              </div>
-              <span style={{ fontSize: 11, color: '#475569', fontFamily: 'monospace' }}>{d.email}</span>
-            </div>
-          ))}
-        </div>
-
         <p style={{ marginTop: 22, textAlign: 'center', fontSize: 13, color: '#64748b' }}>
           New here?{' '}
           <Link to="/register" style={{ color: '#818cf8', fontWeight: 600, textDecoration: 'none' }}>Create account</Link>
