@@ -12,7 +12,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,
 
 EARNINGS_DB = os.getenv("EARNINGS_DATABASE_URL", "postgresql://postgres:postgres@localhost/fairgig_earnings")
 AUTH_SERVICE_URL = os.getenv("AUTH_SERVICE_URL", "http://localhost:8000")
-engine = create_engine(EARNINGS_DB)
+engine = create_engine(EARNINGS_DB, pool_pre_ping=True)
 
 async def require_advocate(authorization: str):
     async with httpx.AsyncClient() as client:

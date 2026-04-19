@@ -11,9 +11,18 @@ export default function AdvocateDashboard() {
 
   useEffect(() => {
     Promise.all([
-      analyticsAPI.get('/analytics/commission-trends'),
-      analyticsAPI.get('/analytics/income-by-city'),
-      analyticsAPI.get('/analytics/vulnerability-flags'),
+      analyticsAPI.get('/analytics/commission-trends', {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  }
+}),
+analyticsAPI.get('/analytics/income-by-city', {
+  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+}),
+
+analyticsAPI.get('/analytics/vulnerability-flags', {
+  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+}),
     ]).then(([c, ci, v]) => {
       setCommissionData(c.data);
       setCityData(ci.data);
