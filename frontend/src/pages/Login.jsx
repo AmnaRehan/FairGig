@@ -180,28 +180,6 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Demo accounts */}
-          <div style={s.demoSection}>
-            <div style={s.dividerRow}>
-              <div style={s.dividerLine} />
-              <span style={s.dividerText}>Try a demo account</span>
-              <div style={s.dividerLine} />
-            </div>
-            <div style={s.demoGrid}>
-              {DEMO.map(d => (
-                <button
-                  key={d.role}
-                  onClick={() => fillDemo(d)}
-                  className="fg-demo-btn"
-                  style={s.demoBtn}
-                >
-                  <span style={{ fontSize: 22 }}>{d.icon}</span>
-                  <span style={{ ...s.demoRole, background: d.bg, color: d.color }}>{d.role}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Register link */}
           <p style={s.registerLine}>
             New to FairGig?{' '}

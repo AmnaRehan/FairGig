@@ -113,7 +113,6 @@ export default function LogEarnings() {
         net_received: parseFloat(form.net_received),
       });
       toast.success('Shift logged successfully!');
-      navigate('/');
     } catch (err) {
       toast.error(err.response?.data?.detail || 'Failed to log shift');
     } finally {
@@ -126,10 +125,10 @@ export default function LogEarnings() {
     setLoading(true);
     const fd = new FormData();
     fd.append('file', csvFile);
-    try {
+    try { 
       const r = await earningsAPI.post('/earnings/bulk-import', fd);
       toast.success(`Imported ${r.data.imported} entries!`);
-      navigate('/');
+     
     } catch {
       toast.error('CSV import failed');
     } finally {
