@@ -11,6 +11,10 @@ import GrievanceBoard from './pages/GrievanceBoard';
 import LogEarnings from './pages/LogEarnings';
 import Certificate from './pages/Certificate';
 import Navbar from './components/Navbar';
+import Landing from './pages/Landing';
+// add this route:
+
+// and make your post-login navigate('/dashboard') or wherever your dashboard lives
 
 function ProtectedRoute({ children, roles }) {
   const { user, loading } = useAuth();
@@ -26,6 +30,9 @@ function AppRoutes() {
     <>
       <Navbar />
       <Routes>
+
+
+        <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={
