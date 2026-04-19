@@ -5,25 +5,24 @@ import {
   ResponsiveContainer, LineChart, Line, Cell,
 } from 'recharts';
 
-const PINK   = '#EC4899';
-const PINK_L = '#FDF2F8';
-const PINK_M = '#FBCFE8';
-const PINK_D = '#9D174D';
-const ROSE   = '#F43F5E';
-const PURPLE = '#A855F7';
+const PINK   = '#F59E0B';
+const PINK_L = '#FFFBEB';
+const PINK_M = '#FDE68A';
+const PINK_D = '#B45309';
+const ROSE   = '#D97706';
+const PURPLE = '#EA580C';
 const token  = () => localStorage.getItem('token');
 
-/* ── floating decorative blobs ── */
+/* ── floating decorative shapes ── */
 function Floaties() {
   const shapes = [
-    { top: '4%',  left: '2%',  size: 90,  emoji: '🌸', dur: '6s',  delay: '0s'   },
-    { top: '8%',  right: '3%', size: 70,  emoji: '💗', dur: '8s',  delay: '1s'   },
-    { top: '22%', left: '1%',  size: 55,  emoji: '🌺', dur: '7s',  delay: '2s'   },
-    { top: '40%', right: '1%', size: 80,  emoji: '🦋', dur: '9s',  delay: '0.5s' },
-    { top: '58%', left: '0%',  size: 60,  emoji: '💐', dur: '6.5s',delay: '3s'   },
-    { top: '72%', right: '2%', size: 65,  emoji: '🌷', dur: '7.5s',delay: '1.5s' },
-    { top: '85%', left: '3%',  size: 50,  emoji: '✨', dur: '5s',  delay: '2.5s' },
-    { top: '90%', right: '4%', size: 75,  emoji: '🫧', dur: '8.5s',delay: '0.8s' },
+    { top: '6%',  left: '2%',  size: 88, shape: 'circle', dur: '6s',  delay: '0s'   },
+    { top: '12%', right: '3%', size: 68, shape: 'square', dur: '8s',  delay: '1s'   },
+    { top: '25%', left: '1%',  size: 56, shape: 'diamond',dur: '7s',  delay: '2s'   },
+    { top: '42%', right: '2%', size: 78, shape: 'circle', dur: '9s',  delay: '0.5s' },
+    { top: '60%', left: '1%',  size: 62, shape: 'square', dur: '6.5s',delay: '3s'   },
+    { top: '76%', right: '2%', size: 64, shape: 'diamond',dur: '7.5s',delay: '1.5s' },
+    { top: '90%', right: '4%', size: 72, shape: 'circle', dur: '8.5s',delay: '0.8s' },
   ];
   return (
     <>
@@ -33,15 +32,19 @@ function Floaties() {
           top: s.top,
           left: s.left || 'auto',
           right: s.right || 'auto',
-          fontSize: s.size * 0.36,
-          opacity: 0.18,
+          width: s.size,
+          height: s.size,
+          opacity: 0.11,
           animation: `floatY ${s.dur} ease-in-out ${s.delay} infinite alternate`,
           pointerEvents: 'none',
           userSelect: 'none',
           zIndex: 0,
-          filter: 'blur(1px)',
+          borderRadius: s.shape === 'circle' ? '50%' : s.shape === 'square' ? '14px' : '8px',
+          transform: s.shape === 'diamond' ? 'rotate(45deg)' : 'none',
+          background: 'linear-gradient(135deg, #FDE68A, #FED7AA)',
+          border: '1.5px solid rgba(148,163,184,0.25)',
+          filter: 'blur(0.5px)',
         }}>
-          {s.emoji}
         </div>
       ))}
     </>
@@ -52,7 +55,7 @@ function Floaties() {
 const PinkTooltip = ({ active, payload, label, prefix = '', suffix = '' }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div style={{ background: '#fff', border: `2px solid ${PINK_M}`, borderRadius: 12, padding: '10px 16px', boxShadow: '0 4px 20px rgba(236,72,153,0.15)', fontFamily: '"Nunito", sans-serif' }}>
+    <div style={{ background: '#fff', border: `2px solid ${PINK_M}`, borderRadius: 12, padding: '10px 16px', boxShadow: '0 4px 20px rgba(217,119,6,0.16)', fontFamily: '"Nunito", sans-serif' }}>
       <div style={{ fontSize: 12, fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 4 }}>{label}</div>
       {payload.map((p, i) => (
         <div key={i} style={{ fontSize: 16, fontWeight: 900, color: PINK_D }}>
@@ -83,7 +86,7 @@ function StatCard({ icon, label, value, sub, color = PINK }) {
   );
 }
 
-const PLATFORM_COLORS = ['#EC4899', '#F43F5E', '#A855F7', '#8B5CF6', '#EC4899'];
+const PLATFORM_COLORS = ['#F59E0B', '#D97706', '#EA580C', '#F97316', '#FBBF24'];
 
 export default function AdvocateDashboard() {
   const [commissionData, setCommissionData] = useState([]);
@@ -110,14 +113,14 @@ export default function AdvocateDashboard() {
     <div style={{ minHeight: '100vh', background: PINK_L, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, fontFamily: '"Nunito", sans-serif' }}>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}} @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');`}</style>
       <div style={{ width: 48, height: 48, border: `4px solid ${PINK_M}`, borderTop: `4px solid ${PINK}`, borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-      <span style={{ fontSize: 16, color: PINK_D, fontWeight: 700 }}>Loading analytics... 🌸</span>
+      <span style={{ fontSize: 16, color: PINK_D, fontWeight: 700 }}>Loading analytics...</span>
     </div>
   );
 
   if (error) return (
     <div style={{ minHeight: '100vh', background: PINK_L, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Nunito", sans-serif' }}>
       <div style={{ background: '#fff', borderRadius: 20, border: `2px solid ${PINK_M}`, padding: '40px 48px', textAlign: 'center' }}>
-        <div style={{ fontSize: 48, marginBottom: 12 }}>🌺</div>
+        <div style={{ fontSize: 48, marginBottom: 12 }}>⚠️</div>
         <div style={{ fontSize: 18, fontWeight: 800, color: PINK_D }}>{error}</div>
       </div>
     </div>
@@ -128,7 +131,7 @@ export default function AdvocateDashboard() {
   const topCity       = cityData.length ? cityData.reduce((a, b) => a.median_net > b.median_net ? a : b, {}) : null;
 
   return (
-    <div style={{ minHeight: '100vh', background: `linear-gradient(160deg, #FDF2F8 0%, #FFF1F5 50%, #FDF4FF 100%)`, fontFamily: '"Nunito", sans-serif', position: 'relative' }}>
+    <div style={{ minHeight: '100vh', background: `linear-gradient(160deg, #FFFBEB 0%, #FFF7ED 55%, #FFFFFF 100%)`, fontFamily: '"Nunito", sans-serif', position: 'relative' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         * { font-family: "Nunito", sans-serif; }
@@ -137,9 +140,9 @@ export default function AdvocateDashboard() {
           100% { transform: translateY(-22px) rotate(8deg); }
         }
         @keyframes fadeup { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
-        .vd-row:hover { background: #FDF2F8 !important; }
+        .vd-row:hover { background: #FFFBEB !important; }
         .recharts-cartesian-grid-horizontal line,
-        .recharts-cartesian-grid-vertical line { stroke: #FCE7F3; }
+        .recharts-cartesian-grid-vertical line { stroke: #FEF3C7; }
       `}</style>
 
       <Floaties />
@@ -158,7 +161,7 @@ export default function AdvocateDashboard() {
             </div>
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            {['🌸', '💗', '✨'].map((e, i) => (
+            {['📈', '📊', '⚙️'].map((e, i) => (
               <div key={i} style={{ width: 38, height: 38, borderRadius: '50%', background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>{e}</div>
             ))}
           </div>
@@ -192,7 +195,7 @@ export default function AdvocateDashboard() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginBottom: 24 }}>
 
             {/* Commission chart */}
-            <div style={{ background: '#fff', borderRadius: 22, border: `2px solid ${PINK_M}`, padding: '24px 22px', boxShadow: '0 4px 24px rgba(236,72,153,0.08)', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ background: '#fff', borderRadius: 22, border: `2px solid ${PINK_M}`, padding: '24px 22px', boxShadow: '0 4px 24px rgba(217,119,6,0.12)', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', top: -20, right: -20, fontSize: 80, opacity: 0.05 }}>📊</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
                 <div style={{ width: 36, height: 36, borderRadius: 10, background: PINK_L, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, border: `1.5px solid ${PINK_M}` }}>📊</div>
@@ -203,7 +206,7 @@ export default function AdvocateDashboard() {
               </div>
               {commissionData.length === 0 ? (
                 <div style={{ height: 220, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-                  <div style={{ fontSize: 40 }}>🌸</div>
+                  <div style={{ fontSize: 40 }}>📊</div>
                   <p style={{ color: '#CBD5E1', fontSize: 14, fontWeight: 700 }}>No data yet</p>
                 </div>
               ) : (
@@ -224,10 +227,10 @@ export default function AdvocateDashboard() {
             </div>
 
             {/* City income chart */}
-            <div style={{ background: '#fff', borderRadius: 22, border: `2px solid ${PINK_M}`, padding: '24px 22px', boxShadow: '0 4px 24px rgba(236,72,153,0.08)', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ background: '#fff', borderRadius: 22, border: `2px solid ${PINK_M}`, padding: '24px 22px', boxShadow: '0 4px 24px rgba(217,119,6,0.12)', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', top: -20, right: -20, fontSize: 80, opacity: 0.05 }}>🏙️</div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-                <div style={{ width: 36, height: 36, borderRadius: 10, background: '#FDF4FF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, border: '1.5px solid #E9D5FF' }}>🏙️</div>
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: '#FFF7ED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, border: '1.5px solid #FED7AA' }}>🏙️</div>
                 <div>
                   <h3 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: '#1E293B' }}>Income by City</h3>
                   <p style={{ margin: 0, fontSize: 12, color: '#94A3B8', fontWeight: 600 }}>Median net earnings per shift</p>
@@ -235,7 +238,7 @@ export default function AdvocateDashboard() {
               </div>
               {cityData.length === 0 ? (
                 <div style={{ height: 220, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-                  <div style={{ fontSize: 40 }}>🌺</div>
+                  <div style={{ fontSize: 40 }}>🏙️</div>
                   <p style={{ color: '#CBD5E1', fontSize: 14, fontWeight: 700 }}>No city data yet</p>
                 </div>
               ) : (
@@ -257,10 +260,10 @@ export default function AdvocateDashboard() {
           </div>
 
           {/* ── Vulnerability flags table ── */}
-          <div style={{ background: '#fff', borderRadius: 22, border: `2px solid ${PINK_M}`, overflow: 'hidden', boxShadow: '0 4px 24px rgba(236,72,153,0.08)' }}>
+          <div style={{ background: '#fff', borderRadius: 22, border: `2px solid ${PINK_M}`, overflow: 'hidden', boxShadow: '0 4px 24px rgba(217,119,6,0.12)' }}>
 
             {/* Table header */}
-            <div style={{ padding: '22px 24px 18px', borderBottom: `2px solid ${PINK_M}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: `linear-gradient(135deg, #FFF1F5, #FDF4FF)` }}>
+            <div style={{ padding: '22px 24px 18px', borderBottom: `2px solid ${PINK_M}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: `linear-gradient(135deg, #FFFBEB, #FFF7ED)` }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ width: 40, height: 40, borderRadius: 12, background: '#FEE2E2', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, border: '1.5px solid #FCA5A5' }}>🚨</div>
                 <div>
@@ -277,7 +280,7 @@ export default function AdvocateDashboard() {
 
             {vulnFlags.length === 0 ? (
               <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-                <div style={{ fontSize: 52, marginBottom: 14 }}>🌸</div>
+                <div style={{ fontSize: 52, marginBottom: 14 }}>✅</div>
                 <div style={{ fontSize: 18, fontWeight: 800, color: '#1E293B', marginBottom: 6 }}>All clear!</div>
                 <div style={{ fontSize: 14, color: '#94A3B8', fontWeight: 600 }}>No vulnerability flags detected. Workers are earning steadily.</div>
               </div>
@@ -285,7 +288,7 @@ export default function AdvocateDashboard() {
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
                   <thead>
-                    <tr style={{ background: '#FFF1F5' }}>
+                    <tr style={{ background: '#FFFBEB' }}>
                       {['Worker', 'Month', 'Current Net (PKR)', 'Previous Net (PKR)', 'Income Drop'].map(h => (
                         <th key={h} style={{ padding: '13px 18px', textAlign: 'left', fontWeight: 800, color: '#64748B', fontSize: 11, letterSpacing: '0.07em', textTransform: 'uppercase', borderBottom: `2px solid ${PINK_M}`, whiteSpace: 'nowrap' }}>
                           {h}
@@ -295,7 +298,7 @@ export default function AdvocateDashboard() {
                   </thead>
                   <tbody>
                     {vulnFlags.map((f, i) => (
-                      <tr key={i} className="vd-row" style={{ borderBottom: `1.5px solid #FDF2F8`, background: i % 2 === 0 ? '#fff' : '#FFFBFD', transition: 'background 0.15s' }}>
+                      <tr key={i} className="vd-row" style={{ borderBottom: `1.5px solid #FEF3C7`, background: i % 2 === 0 ? '#fff' : '#FFFDF5', transition: 'background 0.15s' }}>
                         <td style={{ padding: '14px 18px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                             <div style={{ width: 34, height: 34, borderRadius: '50%', background: PINK_L, border: `2px solid ${PINK_M}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 900, color: PINK_D, flexShrink: 0 }}>
@@ -336,12 +339,12 @@ export default function AdvocateDashboard() {
                   </tbody>
                 </table>
 
-                <div style={{ padding: '14px 20px', borderTop: `1.5px solid ${PINK_M}`, background: '#FFF1F5', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ padding: '14px 20px', borderTop: `1.5px solid ${PINK_M}`, background: '#FFFBEB', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: 13, color: '#64748B', fontWeight: 700 }}>
                     {vulnFlags.length} worker{vulnFlags.length !== 1 ? 's' : ''} need attention
                   </span>
                   <span style={{ fontSize: 13, color: PINK, fontWeight: 800 }}>
-                    🌸 FairGig Advocate Panel
+                    FairGig Advocate Panel
                   </span>
                 </div>
               </div>

@@ -9,7 +9,7 @@ const STATS = [
 
 const FEATURES = [
   {
-    icon: '💼', title: 'Earnings Tracker', color: '#DBEAFE', iconColor: '#1d4ed8',
+    icon: '💼', title: 'Earnings Tracker', color: '#FFF7ED', iconColor: '#9A3412',
     desc: 'Log every shift in seconds. See exactly what platforms are deducting — in real time. Build a verified income history banks trust.',
   },
   {
@@ -34,7 +34,7 @@ const STEPS = [
 ];
 
 const TESTIMONIALS = [
-  { initials: 'RM', bg: '#DBEAFE', color: '#1d4ed8', name: 'Rashid Mehmood', role: 'Careem Driver · Lahore',       quote: 'FairGig helped me prove my income to get a loan. I never thought a platform would actually care about us drivers.' },
+  { initials: 'RM', bg: '#FFF7ED', color: '#9A3412', name: 'Rashid Mehmood', role: 'Careem Driver · Lahore',       quote: 'FairGig helped me prove my income to get a loan. I never thought a platform would actually care about us drivers.' },
   { initials: 'FZ', bg: '#FCE7F3', color: '#be185d', name: 'Fatima Zahra',   role: 'Foodpanda Rider · Karachi',    quote: 'When Foodpanda wrongly deducted my earnings, FairGig advocates helped me file a complaint and get it resolved in 3 days.' },
   { initials: 'SB', bg: '#FEF3C7', color: '#b45309', name: 'Sajida Bibi',    role: 'InDrive Worker · Peshawar',    quote: 'I am 54 years old and not great with technology but FairGig is very easy. My son helped me sign up and now I use it myself.' },
   { initials: 'UT', bg: '#DCFCE7', color: '#15803d', name: 'Usman Tariq',    role: 'Bykea Courier · Islamabad',    quote: 'The income certificate got me approved for a house rental. My landlord was impressed by how professional it looked.' },
@@ -57,7 +57,7 @@ export default function Landing() {
 
         <h1 style={s.heroH1}>
           Your Work.<br />
-          Your <span style={{ color: '#2563EB' }}>Rights.</span><br />
+          Your <span style={{ color: '#D97706' }}>Rights.</span><br />
           Protected — Simply.
         </h1>
 
@@ -104,7 +104,7 @@ export default function Landing() {
       {/* ── FEATURES ── */}
       <section style={{ ...s.section, background: '#F0F6FF' }}>
         <div style={s.sectionHeader}>
-          <div style={{ ...s.tag, background: '#DBEAFE', color: '#1d4ed8' }}>What We Offer</div>
+          <div style={{ ...s.tag, background: '#FFF7ED', color: '#9A3412' }}>What We Offer</div>
           <h2 style={s.sectionTitle}>Everything you need<br />to protect yourself</h2>
           <p style={s.sectionSub}>Designed for drivers and riders aged 40–65+. Big text, clear steps, easy to use.</p>
         </div>
@@ -158,7 +158,7 @@ export default function Landing() {
                 ))}
                 <div style={{ ...s.epRow, marginTop: 8, paddingTop: 12, borderTop: '2px solid #f1f5f9' }}>
                   <span style={{ ...s.epRowLabel, fontWeight: 700, color: '#0f172a' }}>Shifts Verified</span>
-                  <span style={{ fontWeight: 700, color: '#2563EB' }}>14 of 14 ✅</span>
+                  <span style={{ fontWeight: 700, color: '#D97706' }}>14 of 14 ✅</span>
                 </div>
               </div>
             </div>
@@ -290,7 +290,7 @@ const s = {
     fontFamily: "'Source Sans 3', 'Segoe UI', sans-serif",
     fontSize: 17,
     color: '#1e293b',
-    background: '#F0F6FF',
+    background: '#FFF7ED',
     lineHeight: 1.6,
     overflowX: 'hidden',
   },
@@ -309,21 +309,21 @@ const s = {
     zIndex: 100,
   },
   logo:     { display: 'flex', alignItems: 'center', gap: 10 },
-  logoMark: { width: 42, height: 42, borderRadius: 12, background: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 900, fontSize: 20, fontFamily: "'Nunito', sans-serif" },
+  logoMark: { width: 42, height: 42, borderRadius: 12, background: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 900, fontSize: 20, fontFamily: "'Nunito', sans-serif" },
   logoText: { fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 22, color: '#1e293b', letterSpacing: '-0.5px' },
   navLinks: { display: 'flex', gap: 4 },
   navLink:  { padding: '8px 14px', borderRadius: 10, fontSize: 15, fontWeight: 600, color: '#475569', cursor: 'pointer', border: 'none', background: 'none', transition: 'all 0.15s' },
-  navCta:   { padding: '10px 22px', borderRadius: 12, fontSize: 16, fontWeight: 700, background: '#2563EB', color: '#fff', border: 'none', cursor: 'pointer', transition: 'all 0.15s' },
+  navCta:   { padding: '10px 22px', borderRadius: 12, fontSize: 16, fontWeight: 700, background: '#D97706', color: '#fff', border: 'none', cursor: 'pointer', transition: 'all 0.15s' },
 
   /* Hero */
   hero: {
-    background: 'linear-gradient(160deg, #EFF6FF 0%, #F0FDF4 60%, #FFFBEB 100%)',
+    background: 'linear-gradient(160deg, #FFF7ED 0%, #FFFBEB 55%, #FFFFFF 100%)',
     padding: '56px 32px 52px',
     textAlign: 'center',
     borderBottom: '2px solid #e2e8f0',
   },
-  badge:    { display: 'inline-flex', alignItems: 'center', gap: 8, background: '#DBEAFE', color: '#1d4ed8', fontSize: 13, fontWeight: 700, padding: '6px 16px', borderRadius: 100, marginBottom: 24, border: '1.5px solid #93c5fd', letterSpacing: '0.03em' },
-  badgeDot: { width: 8, height: 8, borderRadius: '50%', background: '#2563EB' },
+  badge:    { display: 'inline-flex', alignItems: 'center', gap: 8, background: '#FFF7ED', color: '#9A3412', fontSize: 13, fontWeight: 700, padding: '6px 16px', borderRadius: 100, marginBottom: 24, border: '1.5px solid #FDBA74', letterSpacing: '0.03em' },
+  badgeDot: { width: 8, height: 8, borderRadius: '50%', background: '#D97706' },
   heroH1:   { fontFamily: "'Nunito', sans-serif", fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 900, lineHeight: 1.1, color: '#0f172a', margin: '0 0 18px', letterSpacing: '-1px' },
   heroSub:  { fontSize: 'clamp(16px, 2vw, 19px)', color: '#475569', maxWidth: 520, margin: '0 auto 36px', lineHeight: 1.7 },
   heroBtns: { display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 40 },
@@ -333,21 +333,21 @@ const s = {
   btnPrimary: {
     display: 'inline-flex', alignItems: 'center', gap: 8,
     padding: '16px 32px', borderRadius: 16,
-    background: '#2563EB', color: '#fff',
+    background: '#D97706', color: '#fff',
     fontSize: 18, fontWeight: 800, border: 'none', cursor: 'pointer',
-    boxShadow: '0 4px 16px rgba(37,99,235,0.35)', transition: 'all 0.15s',
+    boxShadow: '0 4px 16px rgba(217,119,6,0.3)', transition: 'all 0.15s',
     fontFamily: "'Nunito', sans-serif",
   },
   btnSecondary: {
     display: 'inline-flex', alignItems: 'center', gap: 8,
     padding: '16px 28px', borderRadius: 16,
-    background: '#fff', color: '#2563EB',
-    fontSize: 17, fontWeight: 700, border: '2px solid #2563EB', cursor: 'pointer',
+    background: '#fff', color: '#D97706',
+    fontSize: 17, fontWeight: 700, border: '2px solid #D97706', cursor: 'pointer',
     transition: 'all 0.15s', fontFamily: "'Nunito', sans-serif",
   },
 
   /* Stats bar */
-  statsBar: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', background: '#2563EB' },
+  statsBar: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', background: '#D97706' },
   stat:      { padding: '28px 20px', textAlign: 'center', borderRight: '1px solid rgba(255,255,255,0.15)' },
   statValue: { fontFamily: "'Nunito', sans-serif", fontSize: 30, fontWeight: 900, color: '#fff', lineHeight: 1, marginBottom: 5, letterSpacing: '-1px' },
   statLabel: { fontSize: 13, color: 'rgba(255,255,255,0.78)', fontWeight: 600 },
@@ -371,7 +371,7 @@ const s = {
   splitGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 32, alignItems: 'start' },
 
   earningsCard:    { background: '#fff', borderRadius: 20, border: '2px solid #e2e8f0', overflow: 'hidden' },
-  earningsHeader:  { background: '#0f172a', padding: '16px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+  earningsHeader:  { background: '#B45309', padding: '16px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
   earningsTitle:   { fontFamily: "'Nunito', sans-serif", fontWeight: 800, color: '#fff', fontSize: 16 },
   earningsPeriod:  { fontSize: 12, color: '#94a3b8', fontWeight: 600 },
   earningsTotal:   { display: 'flex', alignItems: 'flex-end', gap: 8, marginBottom: 18, paddingBottom: 18, borderBottom: '1.5px solid #f1f5f9' },
@@ -388,18 +388,18 @@ const s = {
   alertDesc: { fontSize: 13, color: '#64748b', margin: 0, lineHeight: 1.5 },
   chip:      { display: 'inline-flex', alignItems: 'center', padding: '5px 12px', borderRadius: 100, fontSize: 12, fontWeight: 700, flexShrink: 0 },
 
-  cert:        { background: 'linear-gradient(135deg, #EFF6FF, #F0FDF4)', borderRadius: 20, border: '2px solid #93c5fd', padding: 24, textAlign: 'center' },
-  certBadge:   { width: 56, height: 56, borderRadius: '50%', background: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px', fontSize: 26 },
+  cert:        { background: 'linear-gradient(135deg, #FFF7ED, #FFFBEB)', borderRadius: 20, border: '2px solid #FDBA74', padding: 24, textAlign: 'center' },
+  certBadge:   { width: 56, height: 56, borderRadius: '50%', background: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px', fontSize: 26 },
   certTitle:   { fontFamily: "'Nunito', sans-serif", fontSize: 18, fontWeight: 900, color: '#0f172a', margin: '0 0 6px' },
   certSub:     { fontSize: 13, color: '#64748b', margin: '0 0 14px' },
-  certAmount:  { fontFamily: "'Nunito', sans-serif", fontSize: 32, fontWeight: 900, color: '#2563EB', margin: '0 0 4px', letterSpacing: '-1px' },
+  certAmount:  { fontFamily: "'Nunito', sans-serif", fontSize: 32, fontWeight: 900, color: '#D97706', margin: '0 0 4px', letterSpacing: '-1px' },
   certPeriod:  { fontSize: 12, color: '#64748b', margin: '0 0 16px' },
   certVerified:{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#DCFCE7', color: '#15803d', border: '1.5px solid #86efac', borderRadius: 100, padding: '5px 14px', fontSize: 13, fontWeight: 700 },
 
   /* Steps */
   stepsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14 },
   stepCard:  { background: '#fff', borderRadius: 20, padding: '24px 18px', border: '2px solid #e2e8f0', textAlign: 'center', transition: 'all 0.2s' },
-  stepNum:   { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 38, borderRadius: '50%', background: '#2563EB', color: '#fff', fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 17, margin: '0 auto 14px' },
+  stepNum:   { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 38, borderRadius: '50%', background: '#D97706', color: '#fff', fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 17, margin: '0 auto 14px' },
   stepTitle: { fontFamily: "'Nunito', sans-serif", fontSize: 16, fontWeight: 800, color: '#0f172a', margin: '0 0 8px' },
   stepDesc:  { fontSize: 13, color: '#64748b', lineHeight: 1.6, margin: 0 },
 
@@ -410,14 +410,14 @@ const s = {
   avatar:    { width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14, flexShrink: 0, fontFamily: "'Nunito', sans-serif" },
 
   /* CTA */
-  ctaSection:{ background: '#2563EB', padding: '64px 32px', textAlign: 'center' },
+  ctaSection:{ background: '#D97706', padding: '64px 32px', textAlign: 'center' },
   ctaH2:     { fontFamily: "'Nunito', sans-serif", fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 900, color: '#fff', margin: '0 0 14px', letterSpacing: '-0.8px' },
   ctaP:      { fontSize: 17, color: 'rgba(255,255,255,0.82)', maxWidth: 420, margin: '0 auto 32px', lineHeight: 1.65 },
-  btnWhite:  { display: 'inline-flex', alignItems: 'center', gap: 8, padding: '18px 36px', borderRadius: 16, background: '#fff', color: '#2563EB', fontSize: 18, fontWeight: 800, border: 'none', cursor: 'pointer', transition: 'all 0.15s', fontFamily: "'Nunito', sans-serif" },
+  btnWhite:  { display: 'inline-flex', alignItems: 'center', gap: 8, padding: '18px 36px', borderRadius: 16, background: '#fff', color: '#D97706', fontSize: 18, fontWeight: 800, border: 'none', cursor: 'pointer', transition: 'all 0.15s', fontFamily: "'Nunito', sans-serif" },
   ctaNote:   { marginTop: 16, fontSize: 13, color: 'rgba(255,255,255,0.6)' },
 
   /* Footer */
-  footer: { background: '#0f172a', padding: '32px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 },
+  footer: { background: '#9A3412', padding: '32px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 },
 };
 
 /* ─────────────────────────────────────────
@@ -426,14 +426,14 @@ const s = {
 const CSS = `
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Source+Sans+3:wght@400;600;700&display=swap');
 
-  .fg-nav-link:hover  { background: #EFF6FF !important; color: #2563EB !important; }
-  .fg-cta-nav:hover   { background: #1d4ed8 !important; transform: translateY(-1px); }
-  .fg-btn-primary:hover  { background: #1d4ed8 !important; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(37,99,235,0.45) !important; }
-  .fg-btn-secondary:hover{ background: #EFF6FF !important; transform: translateY(-2px); }
-  .fg-btn-white:hover    { background: #EFF6FF !important; transform: translateY(-2px); }
-  .fg-feat-card:hover    { border-color: #93c5fd !important; transform: translateY(-3px) !important; box-shadow: 0 12px 32px rgba(37,99,235,0.12) !important; }
-  .fg-step-card:hover    { border-color: #93c5fd !important; transform: translateY(-3px) !important; }
-  .fg-test-card:hover    { border-color: #93c5fd !important; transform: translateY(-2px) !important; }
+  .fg-nav-link:hover  { background: #FFF7ED !important; color: #D97706 !important; }
+  .fg-cta-nav:hover   { background: #B45309 !important; transform: translateY(-1px); }
+  .fg-btn-primary:hover  { background: #B45309 !important; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(217,119,6,0.45) !important; }
+  .fg-btn-secondary:hover{ background: #FFF7ED !important; transform: translateY(-2px); }
+  .fg-btn-white:hover    { background: #FFF7ED !important; transform: translateY(-2px); }
+  .fg-feat-card:hover    { border-color: #FDBA74 !important; transform: translateY(-3px) !important; box-shadow: 0 12px 32px rgba(217,119,6,0.16) !important; }
+  .fg-step-card:hover    { border-color: #FDBA74 !important; transform: translateY(-3px) !important; }
+  .fg-test-card:hover    { border-color: #FDBA74 !important; transform: translateY(-2px) !important; }
 
   @media (max-width: 768px) {
     .fg-feat-card, .fg-test-card { width: 100%; }

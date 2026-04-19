@@ -3,9 +3,9 @@ import { certificateAPI } from '../api/config';
 import { useAuth } from '../context/auth';
 import toast from 'react-hot-toast';
 
-const ACCENT   = '#2563EB';
-const ACCENT_D = '#1D4ED8';
-const GREEN    = '#10B981';
+const ACCENT   = '#D97706';
+const ACCENT_D = '#B45309';
+const GREEN    = '#EA580C';
 const ORANGE   = '#F59E0B';
 const RED      = '#EF4444';
 
@@ -85,14 +85,14 @@ export default function Certificate() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#F0F4FF',
+      background: '#FFF7ED',
       fontFamily: '"Nunito", system-ui, sans-serif',
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.3); cursor: pointer; scale: 1.2; }
         * { font-family: "Nunito", system-ui, sans-serif; }
-        .cert-generate-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(37,99,235,0.4) !important; }
+        .cert-generate-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(217,119,6,0.35) !important; }
         .cert-generate-btn:active:not(:disabled) { transform: translateY(0); }
       `}</style>
 
@@ -128,7 +128,7 @@ export default function Certificate() {
           border: '2px solid #E2E8F0',
           marginBottom: 18,
           overflow: 'hidden',
-          boxShadow: '0 4px 24px rgba(37,99,235,0.08)',
+          boxShadow: '0 4px 24px rgba(217,119,6,0.14)',
         }}>
           {/* Certificate mock header */}
           <div style={{
@@ -240,7 +240,7 @@ export default function Certificate() {
           marginBottom: 16,
         }}>
           <h2 style={{ margin: '0 0 18px', fontSize: 18, fontWeight: 800, color: '#1E293B', display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ width: 36, height: 36, borderRadius: 10, background: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>
+            <span style={{ width: 36, height: 36, borderRadius: 10, background: '#FFF7ED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>
               📅
             </span>
             Choose your date range
@@ -313,7 +313,7 @@ export default function Certificate() {
                     transition: 'all 0.15s',
                     fontFamily: 'inherit',
                   }}
-                  onMouseEnter={e => { e.target.style.borderColor = ACCENT; e.target.style.color = ACCENT; e.target.style.background = '#EFF6FF'; }}
+                  onMouseEnter={e => { e.target.style.borderColor = ACCENT; e.target.style.color = ACCENT; e.target.style.background = '#FFF7ED'; }}
                   onMouseLeave={e => { e.target.style.borderColor = '#E2E8F0'; e.target.style.color = '#475569'; e.target.style.background = '#F8FAFC'; }}
                 >
                   {label}

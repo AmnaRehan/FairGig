@@ -14,7 +14,7 @@ const CAT_META = {
 };
 
 const STATUS_META = {
-  open:      { label: 'Open',      icon: '🔵', bg: '#EFF6FF', color: '#1d4ed8', border: '#93c5fd', left: '#3b82f6' },
+  open:      { label: 'Open',      icon: '🟠', bg: '#FFF7ED', color: '#9A3412', border: '#FDBA74', left: '#D97706' },
   escalated: { label: 'Escalated', icon: '🔴', bg: '#FEE2E2', color: '#dc2626', border: '#fca5a5', left: '#ef4444' },
   resolved:  { label: 'Resolved',  icon: '🟢', bg: '#DCFCE7', color: '#15803d', border: '#86efac', left: '#10b981' },
 };
@@ -112,8 +112,8 @@ export default function GrievanceBoard() {
       {/* ── SUMMARY STATS ── */}
       <div style={s.statsRow}>
         {[
-          { label: 'Total Complaints', value: counts.all,      bg: '#EFF6FF', color: '#1d4ed8', icon: '📋' },
-          { label: 'Open',             value: counts.open,      bg: '#EFF6FF', color: '#1d4ed8', icon: '🔵' },
+          { label: 'Total Complaints', value: counts.all,      bg: '#FFF7ED', color: '#9A3412', icon: '📋' },
+          { label: 'Open',             value: counts.open,      bg: '#FFF7ED', color: '#9A3412', icon: '🟠' },
           { label: 'Escalated',        value: counts.escalated, bg: '#FEE2E2', color: '#dc2626', icon: '🔴' },
           { label: 'Resolved',         value: counts.resolved,  bg: '#DCFCE7', color: '#15803d', icon: '🟢' },
         ].map(st => (
@@ -146,9 +146,9 @@ export default function GrievanceBoard() {
                     className="fg-pill-btn"
                     style={{
                       ...s.pillBtn,
-                      background: form.platform === p ? '#DBEAFE' : '#F8FAFC',
-                      border:     form.platform === p ? '2px solid #2563EB' : '2px solid #e2e8f0',
-                      color:      form.platform === p ? '#1d4ed8' : '#64748b',
+                      background: form.platform === p ? '#FFF7ED' : '#F8FAFC',
+                      border:     form.platform === p ? '2px solid #D97706' : '2px solid #e2e8f0',
+                      color:      form.platform === p ? '#9A3412' : '#64748b',
                       fontWeight: form.platform === p ? 800 : 600,
                     }}>
                     {PLATFORM_ICONS[p]} {p}
@@ -244,9 +244,9 @@ export default function GrievanceBoard() {
               className="fg-tab"
               style={{
                 ...s.tab,
-                background:  activeTab === t.key ? '#2563EB' : 'transparent',
+                background:  activeTab === t.key ? '#D97706' : 'transparent',
                 color:       activeTab === t.key ? '#fff'    : '#64748b',
-                borderColor: activeTab === t.key ? '#2563EB' : '#e2e8f0',
+                borderColor: activeTab === t.key ? '#D97706' : '#e2e8f0',
               }}>
               {t.label}
             </button>
@@ -388,7 +388,7 @@ export default function GrievanceBoard() {
 const s = {
   root: {
     minHeight: '100vh',
-    background: '#F0F6FF',
+    background: '#FFF7ED',
     padding: '32px 24px 60px',
     fontFamily: "'Source Sans 3', 'Segoe UI', sans-serif",
     fontSize: 16,
@@ -404,9 +404,9 @@ const s = {
   headerLeft: { display: 'flex', alignItems: 'center', gap: 16 },
   headerIcon: {
     width: 56, height: 56, borderRadius: 18,
-    background: 'linear-gradient(135deg, #2563EB, #1d4ed8)',
+    background: 'linear-gradient(135deg, #F59E0B, #D97706)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontSize: 26, boxShadow: '0 8px 24px rgba(37,99,235,0.35)',
+    fontSize: 26, boxShadow: '0 8px 24px rgba(217,119,6,0.28)',
     flexShrink: 0,
   },
   pageTitle: { fontFamily: "'Nunito', sans-serif", fontSize: 28, fontWeight: 900, color: '#0f172a', margin: '0 0 4px', letterSpacing: '-0.8px' },
@@ -414,10 +414,10 @@ const s = {
 
   postBtn: {
     padding: '13px 26px', borderRadius: 14, border: 'none',
-    background: 'linear-gradient(135deg, #2563EB, #1d4ed8)',
+    background: 'linear-gradient(135deg, #F59E0B, #D97706)',
     color: '#fff', fontSize: 16, fontWeight: 800,
     cursor: 'pointer', transition: 'all 0.2s',
-    boxShadow: '0 6px 20px rgba(37,99,235,0.35)',
+    boxShadow: '0 6px 20px rgba(217,119,6,0.35)',
     fontFamily: "'Nunito', sans-serif",
   },
   cancelBtn: {
@@ -473,10 +473,10 @@ const s = {
 
   submitBtn: {
     padding: '14px 28px', borderRadius: 14, border: 'none',
-    background: 'linear-gradient(135deg, #2563EB, #1d4ed8)',
+    background: 'linear-gradient(135deg, #F59E0B, #D97706)',
     color: '#fff', fontSize: 16, fontWeight: 800,
     cursor: 'pointer', transition: 'all 0.2s',
-    boxShadow: '0 6px 20px rgba(37,99,235,0.35)',
+    boxShadow: '0 6px 20px rgba(217,119,6,0.35)',
     fontFamily: "'Nunito', sans-serif",
     display: 'flex', alignItems: 'center', gap: 8,
   },
@@ -533,7 +533,7 @@ const s = {
   gCardTitle: { fontFamily: "'Nunito', sans-serif", fontSize: 18, fontWeight: 800, color: '#0f172a', margin: '0 0 10px', letterSpacing: '-0.3px' },
   gCardDesc:  { fontSize: 15, color: '#475569', lineHeight: 1.7, margin: '0 0 6px' },
 
-  expandBtn: { background: 'none', border: 'none', color: '#2563EB', fontSize: 13, fontWeight: 700, cursor: 'pointer', padding: '2px 0', marginBottom: 10 },
+  expandBtn: { background: 'none', border: 'none', color: '#D97706', fontSize: 13, fontWeight: 700, cursor: 'pointer', padding: '2px 0', marginBottom: 10 },
 
   advocateNote: {
     display: 'flex', gap: 12, alignItems: 'flex-start',
@@ -567,7 +567,7 @@ const s = {
 
   /* Empty / Loading / Error */
   emptyState: { textAlign: 'center', padding: '60px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 },
-  spinnerLg:  { width: 40, height: 40, borderRadius: '50%', border: '4px solid #e2e8f0', borderTopColor: '#2563EB', display: 'inline-block', marginBottom: 12 },
+  spinnerLg:  { width: 40, height: 40, borderRadius: '50%', border: '4px solid #e2e8f0', borderTopColor: '#D97706', display: 'inline-block', marginBottom: 12 },
   errorBox:   { display: 'flex', alignItems: 'center', gap: 12, background: '#FEE2E2', border: '2px solid #fca5a5', borderRadius: 16, padding: '18px 22px', maxWidth: 960, margin: '0 auto 20px' },
   retryBtn:   { padding: '8px 20px', borderRadius: 10, border: '2px solid #fca5a5', background: '#fff', color: '#dc2626', fontSize: 14, fontWeight: 700, cursor: 'pointer', marginLeft: 'auto' },
 };
@@ -586,28 +586,28 @@ const CSS = `
   .fg-spinner-lg { animation: fg-spin 0.9s linear infinite; }
 
   .fg-input:focus {
-    border-color: #2563EB !important;
-    box-shadow: 0 0 0 4px rgba(37,99,235,0.12) !important;
-    background: #EFF6FF !important;
+    border-color: #D97706 !important;
+    box-shadow: 0 0 0 4px rgba(217,119,6,0.15) !important;
+    background: #FFF7ED !important;
   }
   .fg-textarea { padding-left: 16px !important; }
   .fg-textarea:focus { padding-left: 16px !important; }
 
-  .fg-post-btn:hover   { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(37,99,235,0.45) !important; }
-  .fg-cancel-btn:hover { border-color: #2563EB !important; color: #2563EB !important; }
-  .fg-submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(37,99,235,0.45) !important; }
+  .fg-post-btn:hover   { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(217,119,6,0.42) !important; }
+  .fg-cancel-btn:hover { border-color: #D97706 !important; color: #D97706 !important; }
+  .fg-submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(217,119,6,0.42) !important; }
   .fg-submit-btn:disabled { opacity: 0.65; cursor: not-allowed !important; }
 
   .fg-pill-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-  .fg-tab:hover      { background: #EFF6FF !important; color: #1d4ed8 !important; border-color: #93c5fd !important; }
+  .fg-tab:hover      { background: #FFF7ED !important; color: #D97706 !important; border-color: #FDBA74 !important; }
 
-  .fg-filter-input:focus { border-color: #2563EB !important; box-shadow: 0 0 0 3px rgba(37,99,235,0.1) !important; }
+  .fg-filter-input:focus { border-color: #D97706 !important; box-shadow: 0 0 0 3px rgba(217,119,6,0.12) !important; }
   .fg-clear-btn:hover    { background: #dc2626 !important; color: #fff !important; }
   .fg-retry-btn:hover    { background: #dc2626 !important; color: #fff !important; }
 
-  .fg-gcard:hover { transform: translateY(-3px) !important; box-shadow: 0 16px 40px rgba(37,99,235,0.1) !important; }
+  .fg-gcard:hover { transform: translateY(-3px) !important; box-shadow: 0 16px 40px rgba(217,119,6,0.16) !important; }
   .fg-expand-btn:hover  { text-decoration: underline; }
-  .fg-upvote-btn:hover  { background: #EFF6FF !important; border-color: #2563EB !important; color: #1d4ed8 !important; }
+  .fg-upvote-btn:hover  { background: #FFF7ED !important; border-color: #D97706 !important; color: #D97706 !important; }
   .fg-escalate-btn:hover{ background: #dc2626 !important; color: #fff !important; }
   .fg-resolve-btn:hover { background: #15803d !important; color: #fff !important; }
 

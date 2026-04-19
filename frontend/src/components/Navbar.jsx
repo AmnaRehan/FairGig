@@ -2,9 +2,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/auth';
 
 const ROLE_CONFIG = {
-  worker:   { icon: '🛵', label: 'Worker',   color: '#065F46', bg: '#ECFDF5', border: '#6EE7B7', accent: '#10B981' },
-  verifier: { icon: '🛡️', label: 'Verifier', color: '#1E40AF', bg: '#EFF6FF', border: '#93C5FD', accent: '#2563EB' },
-  advocate: { icon: '⚖️', label: 'Advocate', color: '#6B21A8', bg: '#FDF4FF', border: '#D8B4FE', accent: '#A855F7' },
+  worker:   { icon: '🛵', label: 'Worker',   color: '#9A3412', bg: '#FFF7ED', border: '#FDBA74', accent: '#EA580C' },
+  verifier: { icon: '🛡️', label: 'Verifier', color: '#9A3412', bg: '#FFF7ED', border: '#FDBA74', accent: '#EA580C' },
+  advocate: { icon: '⚖️', label: 'Advocate', color: '#9A3412', bg: '#FFF7ED', border: '#FDBA74', accent: '#EA580C' },
 };
 
 const NAV_LINKS = {
@@ -38,7 +38,7 @@ export default function Navbar() {
         .fg-nav * { font-family: "Nunito", system-ui, sans-serif; }
         @keyframes fg-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
         @keyframes fg-slidein { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
-        .fg-navlink:hover { background: #F0F4FF !important; color: #2563EB !important; }
+        .fg-navlink:hover { background: #FFF7ED !important; color: #D97706 !important; }
         .fg-logout-btn:hover { background: #FEF2F2 !important; color: #7F1D1D !important; border-color: #FCA5A5 !important; }
         .fg-logo-box:hover { transform: rotate(-6deg) scale(1.08); }
         .fg-menu-link:hover { background: #F0F4FF !important; }
@@ -58,7 +58,7 @@ export default function Navbar() {
         zIndex: 1000,
         background: '#fff',
         borderBottom: '2px solid #E2E8F0',
-        boxShadow: '0 2px 16px rgba(37,99,235,0.06)',
+        boxShadow: '0 2px 16px rgba(217,119,6,0.12)',
         height: 68,
         display: 'flex',
         alignItems: 'center',
@@ -72,7 +72,7 @@ export default function Navbar() {
             width: 38,
             height: 38,
             borderRadius: 12,
-            background: 'linear-gradient(135deg, #2563EB, #7C3AED)',
+            background: 'linear-gradient(135deg, #F59E0B, #D97706)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -80,23 +80,23 @@ export default function Navbar() {
             fontWeight: 900,
             color: '#fff',
             transition: 'transform 0.2s ease',
-            boxShadow: '0 4px 14px rgba(37,99,235,0.3)',
+            boxShadow: '0 4px 14px rgba(217,119,6,0.3)',
             flexShrink: 0,
           }}>
             <img src="/images.png" alt="FairGig" style={{ width: 20, height: 20 }} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
             <span className="fg-brand-title" style={{ fontSize: 19, fontWeight: 900, color: '#1E293B', letterSpacing: '-0.03em' }}>
-              Fair<span style={{ color: '#2563EB' }}>Gig</span>
+              Fair<span style={{ color: '#D97706' }}>Gig</span>
             </span>
             <span className="fg-brand-subtext" style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
               Worker Platform
             </span>
           </div>
           {/* live indicator */}
-          <div className="fg-brand-live" style={{ display: 'flex', alignItems: 'center', gap: 5, marginLeft: 4, background: '#ECFDF5', border: '1.5px solid #6EE7B7', borderRadius: 20, padding: '3px 9px' }}>
-            <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', display: 'inline-block', animation: 'fg-pulse 2s infinite', flexShrink: 0 }} />
-            <span style={{ fontSize: 11, fontWeight: 800, color: '#065F46' }}>Live</span>
+          <div className="fg-brand-live" style={{ display: 'flex', alignItems: 'center', gap: 5, marginLeft: 4, background: '#FFF7ED', border: '1.5px solid #FDBA74', borderRadius: 20, padding: '3px 9px' }}>
+            <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#EA580C', display: 'inline-block', animation: 'fg-pulse 2s infinite', flexShrink: 0 }} />
+            <span style={{ fontSize: 11, fontWeight: 800, color: '#9A3412' }}>Live</span>
           </div>
         </Link>
 
@@ -114,11 +114,11 @@ export default function Navbar() {
                     textDecoration: 'none',
                     fontSize: 14,
                     fontWeight: active ? 800 : 700,
-                    color: active ? '#2563EB' : '#475569',
+                    color: active ? '#D97706' : '#475569',
                     padding: '8px 16px',
                     borderRadius: 12,
-                    background: active ? '#EFF6FF' : 'transparent',
-                    border: active ? '2px solid #BFDBFE' : '2px solid transparent',
+                    background: active ? '#FFF7ED' : 'transparent',
+                    border: active ? '2px solid #FDBA74' : '2px solid transparent',
                     transition: 'all 0.15s',
                     whiteSpace: 'nowrap',
                     position: 'relative',
@@ -133,7 +133,7 @@ export default function Navbar() {
                       transform: 'translateX(-50%)',
                       width: 20,
                       height: 3,
-                      background: '#2563EB',
+                      background: '#D97706',
                       borderRadius: 2,
                     }} />
                   )}
@@ -245,15 +245,15 @@ export default function Navbar() {
                     textDecoration: 'none',
                     padding: '6px 18px',
                     borderRadius: 14,
-                    background: active ? '#EFF6FF' : 'transparent',
+                    background: active ? '#FFF7ED' : 'transparent',
                     minWidth: 64,
                   }}
                 >
                   <span style={{ fontSize: 22 }}>{emoji}</span>
-                  <span style={{ fontSize: 11, fontWeight: active ? 800 : 600, color: active ? '#2563EB' : '#94A3B8' }}>
+                  <span style={{ fontSize: 11, fontWeight: active ? 800 : 600, color: active ? '#D97706' : '#94A3B8' }}>
                     {text}
                   </span>
-                  {active && <span style={{ width: 16, height: 3, borderRadius: 2, background: '#2563EB' }} />}
+                  {active && <span style={{ width: 16, height: 3, borderRadius: 2, background: '#D97706' }} />}
                 </Link>
               );
             })}

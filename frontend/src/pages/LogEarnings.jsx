@@ -8,7 +8,7 @@ const PLATFORMS = [
   { id: 'Foodpanda', emoji: '🩷', color: '#9D174D', bg: '#FDF2F8', border: '#F9A8D4' },
   { id: 'Uber',      emoji: '⬛', color: '#1E293B', bg: '#F8FAFC', border: '#CBD5E1' },
   { id: 'Bykea',     emoji: '🟡', color: '#78350F', bg: '#FFFBEB', border: '#FCD34D' },
-  { id: 'Other',     emoji: '➕', color: '#1E40AF', bg: '#EFF6FF', border: '#93C5FD' },
+  { id: 'Other',     emoji: '➕', color: '#9A3412', bg: '#FFF7ED', border: '#FDBA74' },
 ];
 
 const CATEGORIES = [
@@ -19,10 +19,10 @@ const CATEGORIES = [
   { id: 'other',         label: 'Other',          icon: '📋' },
 ];
 
-const ACCENT   = '#2563EB';
-const ACCENT_D = '#1D4ED8';
-const GREEN    = '#10B981';
-const GREEN_D  = '#059669';
+const ACCENT   = '#D97706';
+const ACCENT_D = '#B45309';
+const GREEN    = '#EA580C';
+const GREEN_D  = '#C2410C';
 const ORANGE   = '#F59E0B';
 
 const field = {
@@ -145,7 +145,7 @@ export default function LogEarnings() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#F0F4FF',
+      background: '#FFF7ED',
       fontFamily: '"Nunito", system-ui, sans-serif',
     }}>
       <style>{`
@@ -230,7 +230,7 @@ export default function LogEarnings() {
           {/* ── SECTION 1: Platform ── */}
           <div style={card}>
             <h2 style={sectionTitle}>
-              <span style={iconBadge('#EEF2FF')}>📱</span>
+              <span style={iconBadge('#FFF7ED')}>📱</span>
               Which platform did you work on?
             </h2>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -281,9 +281,9 @@ export default function LogEarnings() {
                     style={{
                       padding: '12px 18px',
                       borderRadius: 14,
-                      border: `2px solid ${active ? '#93C5FD' : '#E2E8F0'}`,
-                      background: active ? '#EFF6FF' : '#F8FAFC',
-                      color: active ? '#1E40AF' : '#64748B',
+                      border: `2px solid ${active ? '#FDBA74' : '#E2E8F0'}`,
+                      background: active ? '#FFF7ED' : '#F8FAFC',
+                      color: active ? '#9A3412' : '#64748B',
                       fontSize: 15,
                       fontWeight: active ? 800 : 600,
                       cursor: 'pointer',
@@ -291,7 +291,7 @@ export default function LogEarnings() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: 7,
-                      boxShadow: active ? '0 0 0 3px rgba(147,197,253,0.4)' : 'none',
+                      boxShadow: active ? '0 0 0 3px rgba(253,186,116,0.4)' : 'none',
                     }}
                   >
                     {c.icon} {c.label}
@@ -542,7 +542,7 @@ export default function LogEarnings() {
 
           <label style={{
             display: 'block',
-            border: `2px dashed ${csvFile ? '#10B981' : '#CBD5E1'}`,
+            border: `2px dashed ${csvFile ? '#EA580C' : '#CBD5E1'}`,
             borderRadius: 14,
             padding: '24px 20px',
             textAlign: 'center',

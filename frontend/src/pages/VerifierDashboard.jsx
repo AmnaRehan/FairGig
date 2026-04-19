@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { earningsAPI } from '../api/config';
 import toast from 'react-hot-toast';
 
-const ACCENT   = '#059669';
-const ACCENT_L = '#ECFDF5';
-const ACCENT_D = '#047857';
+const ACCENT   = '#D97706';
+const ACCENT_L = '#FFF7ED';
+const ACCENT_D = '#9A3412';
 
 const STATUS = {
-  verified:     { bg: '#ECFDF5', color: '#065F46', border: '#6EE7B7', label: 'Verified',     icon: '✅' },
+  verified:     { bg: '#FFF7ED', color: '#9A3412', border: '#FDBA74', label: 'Verified',     icon: '✅' },
   disputed:     { bg: '#FEF2F2', color: '#7F1D1D', border: '#FCA5A5', label: 'Disputed',     icon: '❌' },
   pending:      { bg: '#FFFBEB', color: '#78350F', border: '#FCD34D', label: 'Pending',      icon: '⏳' },
   unverifiable: { bg: '#F8FAFC', color: '#475569', border: '#CBD5E1', label: 'Unverifiable', icon: '❓' },
@@ -64,15 +64,15 @@ export default function VerifierDashboard() {
   const count    = (s) => s === 'all' ? logs.length : logs.filter(l => l.verification_status === s).length;
 
   if (loading) return (
-    <div style={{ minHeight: '100vh', background: '#F0FDF8', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, fontFamily: '"Nunito", system-ui, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFF7ED', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, fontFamily: '"Nunito", system-ui, sans-serif' }}>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}} @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');`}</style>
-      <div style={{ width: 48, height: 48, border: `4px solid #A7F3D0`, borderTop: `4px solid ${ACCENT}`, borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-      <span style={{ fontSize: 16, color: '#065F46', fontWeight: 700 }}>Loading verifier queue...</span>
+      <div style={{ width: 48, height: 48, border: `4px solid #FDBA74`, borderTop: `4px solid ${ACCENT}`, borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+      <span style={{ fontSize: 16, color: '#9A3412', fontWeight: 700 }}>Loading verifier queue...</span>
     </div>
   );
 
   if (error) return (
-    <div style={{ minHeight: '100vh', background: '#F0FDF8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Nunito", system-ui, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFF7ED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Nunito", system-ui, sans-serif' }}>
       <div style={{ background: '#fff', borderRadius: 20, border: '2px solid #FCA5A5', padding: '32px 40px', textAlign: 'center' }}>
         <div style={{ fontSize: 40, marginBottom: 12 }}>⚠️</div>
         <div style={{ fontSize: 18, fontWeight: 800, color: '#7F1D1D' }}>{error}</div>
@@ -82,11 +82,11 @@ export default function VerifierDashboard() {
   );
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F0FDF8', fontFamily: '"Nunito", system-ui, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: '#FFF7ED', fontFamily: '"Nunito", system-ui, sans-serif' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
         * { font-family: "Nunito", system-ui, sans-serif; }
-        .vd-row:hover { background: #F0FDF8 !important; }
+        .vd-row:hover { background: #FFF7ED !important; }
         .vd-actbtn:hover { transform: scale(1.08); }
         .vd-filter:hover { border-color: ${ACCENT} !important; }
         .vd-pill-btn:hover { opacity: 0.85; }
@@ -119,7 +119,7 @@ export default function VerifierDashboard() {
             { s: 'pending',      ...STATUS.pending,      label: 'Pending Review' },
             { s: 'verified',     ...STATUS.verified,     label: 'Verified' },
             { s: 'disputed',     ...STATUS.disputed,     label: 'Disputed' },
-            { s: 'all',          bg: '#EFF6FF', color: '#1E40AF', border: '#93C5FD', icon: '📋', label: 'Total Entries' },
+            { s: 'all',          bg: '#FFF7ED', color: '#9A3412', border: '#FDBA74', icon: '📋', label: 'Total Entries' },
           ].map(c => (
             <div key={c.s} style={{
               background: '#fff',
@@ -150,7 +150,7 @@ export default function VerifierDashboard() {
           <span style={{ fontSize: 13, fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.07em', marginRight: 4 }}>Filter:</span>
           {FILTERS.map(s => {
             const active = filter === s;
-            const st = STATUS[s] || { color: '#1E40AF', border: '#93C5FD', bg: '#EFF6FF' };
+            const st = STATUS[s] || { color: '#9A3412', border: '#FDBA74', bg: '#FFF7ED' };
             return (
               <button key={s} onClick={() => setFilter(s)} className="vd-filter"
                 style={{
@@ -230,7 +230,7 @@ export default function VerifierDashboard() {
 
                       {/* Platform */}
                       <td style={{ padding: '14px 16px' }}>
-                        <span style={{ background: '#F0FDF8', color: ACCENT_D, border: `1.5px solid #A7F3D0`, padding: '4px 10px', borderRadius: 8, fontSize: 13, fontWeight: 800 }}>
+                        <span style={{ background: '#FFF7ED', color: ACCENT_D, border: `1.5px solid #FDBA74`, padding: '4px 10px', borderRadius: 8, fontSize: 13, fontWeight: 800 }}>
                           {l.platform}
                         </span>
                       </td>
@@ -286,7 +286,7 @@ export default function VerifierDashboard() {
                               href={`http://localhost:8001/${l.screenshot_path}`}
                               target="_blank"
                               rel="noreferrer"
-                              style={{ color: ACCENT_D, fontSize: 13, fontWeight: 800, textDecoration: 'none', background: ACCENT_L, border: `1.5px solid #6EE7B7`, borderRadius: 8, padding: '5px 12px', display: 'inline-block' }}
+                              style={{ color: ACCENT_D, fontSize: 13, fontWeight: 800, textDecoration: 'none', background: ACCENT_L, border: `1.5px solid #FDBA74`, borderRadius: 8, padding: '5px 12px', display: 'inline-block' }}
                             >
                               👁 View
                             </a>
@@ -303,7 +303,7 @@ export default function VerifierDashboard() {
                             <button className="vd-actbtn"
                               onClick={() => verify(l.id, 'verified')}
                               title="Approve"
-                              style={{ background: '#ECFDF5', color: '#065F46', border: '2px solid #6EE7B7', borderRadius: 10, padding: '8px 14px', fontSize: 15, cursor: 'pointer', fontWeight: 900, transition: 'all 0.15s', fontFamily: 'inherit' }}>
+                              style={{ background: '#FFF7ED', color: '#9A3412', border: '2px solid #FDBA74', borderRadius: 10, padding: '8px 14px', fontSize: 15, cursor: 'pointer', fontWeight: 900, transition: 'all 0.15s', fontFamily: 'inherit' }}>
                               ✓
                             </button>
                             <button className="vd-actbtn"

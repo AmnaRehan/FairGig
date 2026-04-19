@@ -49,27 +49,27 @@ export default function WorkerDashboard() {
   };
 
   if (loading) return (
-    <div style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#020617', gap: 16 }}>
-      <div style={{ width: 40, height: 40, border: '3px solid rgba(99,102,241,0.2)', borderTop: '3px solid #6366f1', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+    <div style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#FFF7ED', gap: 16 }}>
+      <div style={{ width: 40, height: 40, border: '3px solid rgba(217,119,6,0.2)', borderTop: '3px solid #D97706', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
       <span style={{ fontSize: 13, color: '#475569' }}>Loading your dashboard...</span>
     </div>
   );
 
   if (error) return (
-    <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#020617' }}>
+    <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FFF7ED' }}>
       <div style={{ textAlign: 'center', color: '#f87171', fontSize: 14 }}>{error}</div>
     </div>
   );
 
   return (
-    <div style={{ minHeight: '100vh', background: 'radial-gradient(circle at 20% 10%, #0f172a, #020617 60%, #000)', padding: '32px 20px' }}>
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(160deg, #FFF7ED 0%, #FFFBEB 60%, #FFFFFF 100%)', padding: '32px 20px' }}>
       <style>{`
         @keyframes shimmer { 0%{background-position:200% center} 100%{background-position:-200% center} }
         @keyframes fadeup { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-        .fg-row:hover { background: rgba(99,102,241,0.04) !important; }
+        .fg-row:hover { background: #FFF7ED !important; }
         .fg-statcard { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .fg-statcard:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important; }
+        .fg-statcard:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(217,119,6,0.2) !important; }
       `}</style>
 
       <div style={{ maxWidth: 1100, margin: '0 auto', animation: 'fadeup 0.4s ease' }}>
@@ -77,12 +77,12 @@ export default function WorkerDashboard() {
         {/* header */}
         <div style={{ marginBottom: 28, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
           <div>
-            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#e2e8f0', margin: '0 0 6px', letterSpacing: '-0.02em' }}>
-              Welcome back, <span style={{ background: 'linear-gradient(135deg,#818cf8,#ec4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{user.full_name}</span>
+            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#1E293B', margin: '0 0 6px', letterSpacing: '-0.02em' }}>
+              Welcome back, <span style={{ background: 'linear-gradient(135deg,#D97706,#EA580C)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{user.full_name}</span>
             </h1>
             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-              <span style={{ fontSize: 12, color: '#475569', background: 'rgba(148,163,184,0.08)', border: '1px solid rgba(148,163,184,0.12)', borderRadius: 20, padding: '3px 10px' }}>🛵 {user.platform}</span>
-              <span style={{ fontSize: 12, color: '#475569', background: 'rgba(148,163,184,0.08)', border: '1px solid rgba(148,163,184,0.12)', borderRadius: 20, padding: '3px 10px' }}>📍 {user.city}</span>
+              <span style={{ fontSize: 12, color: '#9A3412', background: '#FFF7ED', border: '1px solid #FDBA74', borderRadius: 20, padding: '3px 10px' }}>🛵 {user.platform}</span>
+              <span style={{ fontSize: 12, color: '#9A3412', background: '#FFF7ED', border: '1px solid #FDBA74', borderRadius: 20, padding: '3px 10px' }}>📍 {user.city}</span>
             </div>
           </div>
           <div style={{ fontSize: 11, color: '#475569', textAlign: 'right', lineHeight: 1.6 }}>
@@ -94,20 +94,20 @@ export default function WorkerDashboard() {
         {/* stat cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 14, marginBottom: 24 }}>
           {[
-            { label: 'Total Net Earnings', value: `PKR ${totalNet.toLocaleString()}`, icon: '💰', grad: 'linear-gradient(135deg,#6366f1,#8b5cf6)', glow: 'rgba(99,102,241,0.3)' },
-            { label: 'Total Shifts',       value: earnings.length,                    icon: '📋', grad: 'linear-gradient(135deg,#059669,#34d399)', glow: 'rgba(52,211,153,0.3)' },
-            { label: 'Avg. Hourly Rate',   value: `PKR ${avgHourly}/hr`,              icon: '⚡', grad: 'linear-gradient(135deg,#7c3aed,#a78bfa)', glow: 'rgba(167,139,250,0.3)' },
-            { label: 'Verified Shifts',    value: verified,                           icon: '✅', grad: 'linear-gradient(135deg,#d97706,#fbbf24)', glow: 'rgba(251,191,36,0.3)' },
+            { label: 'Total Net Earnings', value: `PKR ${totalNet.toLocaleString()}`, icon: '💰', grad: 'linear-gradient(135deg,#D97706,#EA580C)', glow: 'rgba(217,119,6,0.28)' },
+            { label: 'Total Shifts',       value: earnings.length,                    icon: '📋', grad: 'linear-gradient(135deg,#F59E0B,#D97706)', glow: 'rgba(245,158,11,0.28)' },
+            { label: 'Avg. Hourly Rate',   value: `PKR ${avgHourly}/hr`,              icon: '⚡', grad: 'linear-gradient(135deg,#FB923C,#EA580C)', glow: 'rgba(251,146,60,0.28)' },
+            { label: 'Verified Shifts',    value: verified,                           icon: '✅', grad: 'linear-gradient(135deg,#B45309,#F59E0B)', glow: 'rgba(245,158,11,0.28)' },
           ].map(c => (
             <div key={c.label} className="fg-statcard" style={{
-              background: 'rgba(15,23,42,0.8)', backdropFilter: 'blur(12px)',
-              border: '1px solid rgba(148,163,184,0.1)', borderRadius: 16,
+              background: '#fff',
+              border: '1px solid #FED7AA', borderRadius: 16,
               padding: '20px 22px', position: 'relative', overflow: 'hidden',
-              boxShadow: `0 8px 30px rgba(0,0,0,0.4)`,
+              boxShadow: `0 8px 30px rgba(217,119,6,0.14)`,
             }}>
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: c.grad }} />
               <div style={{ fontSize: 22, marginBottom: 10 }}>{c.icon}</div>
-              <div style={{ fontSize: 22, fontWeight: 700, color: '#e2e8f0', marginBottom: 4 }}>{c.value}</div>
+              <div style={{ fontSize: 22, fontWeight: 700, color: '#1E293B', marginBottom: 4 }}>{c.value}</div>
               <div style={{ fontSize: 12, color: '#64748b' }}>{c.label}</div>
             </div>
           ))}
@@ -116,28 +116,28 @@ export default function WorkerDashboard() {
         {/* chart */}
         {chartData.length > 1 && (
           <div style={{
-            background: 'rgba(15,23,42,0.8)', backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(148,163,184,0.1)', borderRadius: 16,
+            background: '#fff',
+            border: '1px solid #FED7AA', borderRadius: 16,
             padding: 24, marginBottom: 20,
-            boxShadow: '0 8px 30px rgba(0,0,0,0.4)',
+            boxShadow: '0 8px 30px rgba(217,119,6,0.14)',
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 600, color: '#e2e8f0' }}>Earnings per Shift</h3>
-              <span style={{ fontSize: 11, color: '#475569', background: 'rgba(148,163,184,0.08)', border: '1px solid rgba(148,163,184,0.12)', borderRadius: 20, padding: '3px 10px' }}>Last 20 shifts</span>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 600, color: '#1E293B' }}>Earnings per Shift</h3>
+              <span style={{ fontSize: 11, color: '#9A3412', background: '#FFF7ED', border: '1px solid #FDBA74', borderRadius: 20, padding: '3px 10px' }}>Last 20 shifts</span>
             </div>
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={chartData}>
                 <defs>
                   <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="#6366f1" />
-                    <stop offset="100%" stopColor="#ec4899" />
+                    <stop offset="0%" stopColor="#D97706" />
+                    <stop offset="100%" stopColor="#EA580C" />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.08)" />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(217,119,6,0.12)" />
                 <XAxis dataKey="date" tick={{ fontSize: 10, fill: '#475569' }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 10, fill: '#475569' }} axisLine={false} tickLine={false} />
                 <Tooltip
-                  contentStyle={{ background: 'rgba(15,23,42,0.95)', border: '1px solid rgba(148,163,184,0.15)', borderRadius: 10, color: '#e2e8f0', fontSize: 12 }}
+                  contentStyle={{ background: '#fff', border: '1px solid #FDBA74', borderRadius: 10, color: '#1E293B', fontSize: 12 }}
                   formatter={v => [`PKR ${v.toLocaleString()}`, 'Net']}
                 />
                 <Line type="monotone" dataKey="net" stroke="url(#lineGrad)" strokeWidth={2.5} dot={false} />
@@ -158,7 +158,7 @@ export default function WorkerDashboard() {
             <p style={{ color: '#92400e', fontSize: 13, margin: '0 0 14px', color: '#fcd34d' }}>{anomalies.summary}</p>
             {anomalies.flags.map((flag, i) => (
               <div key={i} style={{
-                background: 'rgba(15,23,42,0.7)', borderRadius: 10, padding: '12px 16px', marginBottom: 8,
+                background: '#fff', borderRadius: 10, padding: '12px 16px', marginBottom: 8,
                 borderLeft: `3px solid ${flag.severity === 'high' ? '#ef4444' : '#f59e0b'}`,
               }}>
                 <div style={{ fontWeight: 600, fontSize: 12, color: flag.severity === 'high' ? '#f87171' : '#fbbf24', marginBottom: 4, letterSpacing: '0.05em' }}>
@@ -173,13 +173,13 @@ export default function WorkerDashboard() {
 
         {/* recent shifts table */}
         <div style={{
-          background: 'rgba(15,23,42,0.8)', backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(148,163,184,0.1)', borderRadius: 16,
-          overflow: 'hidden', boxShadow: '0 8px 30px rgba(0,0,0,0.4)',
+          background: '#fff',
+          border: '1px solid #FED7AA', borderRadius: 16,
+          overflow: 'hidden', boxShadow: '0 8px 30px rgba(217,119,6,0.14)',
         }}>
           {/* shimmer header */}
           <div style={{ padding: '18px 24px', borderBottom: '1px solid rgba(148,163,184,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0, fontSize: 14, fontWeight: 600, color: '#e2e8f0' }}>Recent Shifts</h3>
+            <h3 style={{ margin: 0, fontSize: 14, fontWeight: 600, color: '#1E293B' }}>Recent Shifts</h3>
             <span style={{ fontSize: 11, color: '#475569' }}>{earnings.length} total</span>
           </div>
 
@@ -193,7 +193,7 @@ export default function WorkerDashboard() {
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                 <thead>
-                  <tr style={{ background: 'rgba(2,6,23,0.5)' }}>
+                  <tr style={{ background: '#FFF7ED' }}>
                     {['Date', 'Platform', 'Hours', 'Gross', 'Deductions', 'Net', 'Status'].map(h => (
                       <th key={h} style={{ padding: '11px 16px', textAlign: 'left', fontWeight: 600, color: '#475569', fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase', borderBottom: '1px solid rgba(148,163,184,0.08)', whiteSpace: 'nowrap' }}>{h}</th>
                     ))}
@@ -204,12 +204,12 @@ export default function WorkerDashboard() {
                     const st = STATUS[e.verification_status] || STATUS.pending;
                     return (
                       <tr key={e.id} className="fg-row" style={{ borderBottom: '1px solid rgba(148,163,184,0.05)', transition: 'background 0.15s' }}>
-                        <td style={{ padding: '11px 16px', color: '#94a3b8', whiteSpace: 'nowrap' }}>{e.shift_date?.slice(0, 10)}</td>
-                        <td style={{ padding: '11px 16px', color: '#e2e8f0', fontWeight: 500 }}>{e.platform}</td>
+                        <td style={{ padding: '11px 16px', color: '#64748b', whiteSpace: 'nowrap' }}>{e.shift_date?.slice(0, 10)}</td>
+                        <td style={{ padding: '11px 16px', color: '#1E293B', fontWeight: 500 }}>{e.platform}</td>
                         <td style={{ padding: '11px 16px', color: '#64748b' }}>{e.hours_worked}h</td>
-                        <td style={{ padding: '11px 16px', color: '#94a3b8' }}>PKR {e.gross_earned.toLocaleString()}</td>
+                        <td style={{ padding: '11px 16px', color: '#475569' }}>PKR {e.gross_earned.toLocaleString()}</td>
                         <td style={{ padding: '11px 16px', color: '#f87171' }}>-{e.platform_deductions.toLocaleString()}</td>
-                        <td style={{ padding: '11px 16px', color: '#e2e8f0', fontWeight: 700 }}>PKR {e.net_received.toLocaleString()}</td>
+                        <td style={{ padding: '11px 16px', color: '#1E293B', fontWeight: 700 }}>PKR {e.net_received.toLocaleString()}</td>
                         <td style={{ padding: '11px 16px' }}>
                           <span style={{ background: st.bg, color: st.color, border: `1px solid ${st.border}`, padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600 }}>
                             {e.verification_status}

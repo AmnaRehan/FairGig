@@ -4,7 +4,7 @@ import { useAuth } from '../context/auth';
 import toast from 'react-hot-toast';
 
 const DEMO = [
-  { role: 'Worker',   icon: '🛵', email: 'worker@demo.com',   password: 'demo', color: '#1d4ed8', bg: '#DBEAFE' },
+  { role: 'Worker',   icon: '🛵', email: 'worker@demo.com',   password: 'demo', color: '#9A3412', bg: '#FFF7ED' },
   { role: 'Verifier', icon: '✅', email: 'verifier@demo.com', password: 'demo', color: '#15803d', bg: '#DCFCE7' },
   { role: 'Advocate', icon: '⚖️', email: 'advocate@demo.com', password: 'demo', color: '#b45309', bg: '#FEF3C7' },
 ];
@@ -118,8 +118,8 @@ export default function Login() {
 
           {/* mobile logo (hidden on desktop) */}
           <div className="fg-mobile-logo" style={s.mobileLogo}>
-            <div style={{ ...s.logoMark, background: '#2563EB', boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}>F</div>
-            <span style={{ ...s.logoText, color: '#0f172a' }}>Fair<span style={{ color: '#2563EB' }}>Gig</span></span>
+            <div style={{ ...s.logoMark, background: '#D97706', boxShadow: '0 4px 16px rgba(217,119,6,0.3)' }}>F</div>
+            <span style={{ ...s.logoText, color: '#0f172a' }}>Fair<span style={{ color: '#D97706' }}>Gig</span></span>
           </div>
 
           <h1 style={s.formTitle}>Welcome back 👋</h1>
