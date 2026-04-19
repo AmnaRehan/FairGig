@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/auth';
-import { useState } from 'react';
 
 const ROLE_CONFIG = {
   worker:   { icon: '🛵', label: 'Worker',   color: '#065F46', bg: '#ECFDF5', border: '#6EE7B7', accent: '#10B981' },
@@ -27,7 +26,6 @@ const NAV_LINKS = {
 export default function Navbar() {
   const { user, logout } = useAuth();
   const location         = useLocation();
-  const [menuOpen, setMenuOpen] = useState(false);
   const role = ROLE_CONFIG[user?.role] || {};
   const links = NAV_LINKS[user?.role] || [];
 
@@ -44,6 +42,14 @@ export default function Navbar() {
         .fg-logout-btn:hover { background: #FEF2F2 !important; color: #7F1D1D !important; border-color: #FCA5A5 !important; }
         .fg-logo-box:hover { transform: rotate(-6deg) scale(1.08); }
         .fg-menu-link:hover { background: #F0F4FF !important; }
+        .fg-desktop-links, .fg-desktop-user { display: flex; }
+
+        @media (max-width: 960px) {
+          .fg-desktop-links, .fg-desktop-user { display: none !important; }
+          .fg-brand-subtext, .fg-brand-live { display: none !important; }
+          .fg-nav { height: 56px !important; padding: 0 14px !important; }
+          .fg-brand-title { font-size: 17px !important; }
+        }
       `}</style>
 
       <nav className="fg-nav" style={{
@@ -77,18 +83,18 @@ export default function Navbar() {
             boxShadow: '0 4px 14px rgba(37,99,235,0.3)',
             flexShrink: 0,
           }}>
-            F
+            <img src="/images.png" alt="FairGig" style={{ width: 20, height: 20 }} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
-            <span style={{ fontSize: 19, fontWeight: 900, color: '#1E293B', letterSpacing: '-0.03em' }}>
+            <span className="fg-brand-title" style={{ fontSize: 19, fontWeight: 900, color: '#1E293B', letterSpacing: '-0.03em' }}>
               Fair<span style={{ color: '#2563EB' }}>Gig</span>
             </span>
-            <span style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            <span className="fg-brand-subtext" style={{ fontSize: 10, fontWeight: 800, color: '#94A3B8', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
               Worker Platform
             </span>
           </div>
           {/* live indicator */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginLeft: 4, background: '#ECFDF5', border: '1.5px solid #6EE7B7', borderRadius: 20, padding: '3px 9px' }}>
+          <div className="fg-brand-live" style={{ display: 'flex', alignItems: 'center', gap: 5, marginLeft: 4, background: '#ECFDF5', border: '1.5px solid #6EE7B7', borderRadius: 20, padding: '3px 9px' }}>
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', display: 'inline-block', animation: 'fg-pulse 2s infinite', flexShrink: 0 }} />
             <span style={{ fontSize: 11, fontWeight: 800, color: '#065F46' }}>Live</span>
           </div>
@@ -96,7 +102,7 @@ export default function Navbar() {
 
         {/* ── Desktop nav links ── */}
         {user && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <div className="fg-desktop-links" style={{ alignItems: 'center', gap: 4 }}>
             {links.map(({ to, label }) => {
               const active = isActive(to);
               return (
@@ -139,7 +145,7 @@ export default function Navbar() {
 
         {/* ── Right: user pill + logout ── */}
         {user && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+          <div className="fg-desktop-user" style={{ alignItems: 'center', gap: 10, flexShrink: 0 }}>
 
             {/* Role pill */}
             <div style={{
@@ -220,7 +226,6 @@ export default function Navbar() {
           <style>{`
             @media (max-width: 640px) {
               .fg-mobile-tabs { display: flex !important; }
-              .fg-nav { height: 56px; padding: 0 16px; }
             }
           `}</style>
           <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
