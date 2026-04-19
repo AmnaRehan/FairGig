@@ -47,7 +47,7 @@ export default function Login() {
       <style>{CSS}</style>
 
       {/* ── LEFT PANEL — illustration ── */}
-      <div style={s.left}>
+      <div className="fg-left-panel" style={s.left}>
         {/* top-left logo */}
         <div style={s.leftLogo}>
           <div style={s.logoMark}>F</div>
@@ -405,7 +405,7 @@ const s = {
   dividerRow:  { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 },
   dividerLine: { flex: 1, height: 1.5, background: '#e2e8f0' },
   dividerText: { fontSize: 13, color: '#94a3b8', fontWeight: 600, whiteSpace: 'nowrap' },
-  demoGrid:    { display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10 },
+  demoGrid:    { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 10 },
   demoBtn: {
     display: 'flex', flexDirection: 'column', alignItems: 'center',
     gap: 8, padding: '14px 10px', borderRadius: 14,

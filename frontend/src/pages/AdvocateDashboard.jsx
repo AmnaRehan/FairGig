@@ -189,7 +189,7 @@ export default function AdvocateDashboard() {
           </div>
 
           {/* ── Charts row ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginBottom: 24 }}>
 
             {/* Commission chart */}
             <div style={{ background: '#fff', borderRadius: 22, border: `2px solid ${PINK_M}`, padding: '24px 22px', boxShadow: '0 4px 24px rgba(236,72,153,0.08)', position: 'relative', overflow: 'hidden' }}>
@@ -353,3 +353,4 @@ export default function AdvocateDashboard() {
     </div>
   );
 }
+

@@ -308,7 +308,7 @@ export default function LogEarnings() {
               <span style={iconBadge('#FDF2F8')}>📅</span>
               When and where did you work?
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
               <div>
                 <label style={labelSt} htmlFor="shift_date">
                   Shift Date <span style={{ color: ACCENT }}>*</span>
@@ -346,7 +346,7 @@ export default function LogEarnings() {
               <span style={iconBadge('#ECFDF5')}>💰</span>
               How much did you earn?
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
               <div>
                 <label style={labelSt} htmlFor="hours_worked">
                   Hours Worked <span style={{ color: ACCENT }}>*</span>

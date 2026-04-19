@@ -84,7 +84,7 @@ export default function Register() {
             {/* ── STEP 0 — Personal Info ── */}
             {step === 0 && (
               <div className="fg-step-in">
-                <div style={s.fieldRow}>
+                <div className="fg-field-row" style={s.fieldRow}>
                   <Field label="Full Name" id="full_name" value={form.full_name} onChange={v => update('full_name', v)} placeholder="Ali Hassan" icon="👤" required />
                   <Field label="City" id="city" value={form.city} onChange={v => update('city', v)} placeholder="Lahore" icon="🏙" required />
                 </div>
@@ -194,7 +194,7 @@ export default function Register() {
       </div>
 
       {/* ── RIGHT PANEL — illustration ── */}
-      <div style={s.right}>
+      <div className="fg-right-panel" style={s.right}>
         {/* Logo */}
         <div style={s.rightLogo}>
           <div style={s.rightLogoMark}>F</div>
@@ -355,7 +355,7 @@ const s = {
   progressFill:  { height: '100%', background: 'linear-gradient(90deg, #10B981, #059669)', borderRadius: 100, transition: 'width 0.4s ease' },
 
   /* Fields */
-  fieldRow: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 },
+  fieldRow: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14 },
   label: { display: 'block', fontSize: 15, fontWeight: 700, color: '#374151', marginBottom: 8 },
   inputIcon: {
     position: 'absolute', left: 14, top: '50%',
@@ -372,7 +372,7 @@ const s = {
   stepHint: { fontSize: 16, color: '#475569', margin: '0 0 18px', fontWeight: 500 },
 
   /* Platform grid */
-  platformGrid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 18 },
+  platformGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10, marginBottom: 18 },
   platformBtn: {
     padding: '14px 10px', borderRadius: 14, cursor: 'pointer',
     fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -389,7 +389,7 @@ const s = {
   infoBoxText: { fontSize: 14, color: '#15803d', margin: 0, lineHeight: 1.55 },
 
   /* Role grid */
-  roleGrid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 18 },
+  roleGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12, marginBottom: 18 },
   roleBtn: {
     padding: '18px 12px', borderRadius: 16, cursor: 'pointer',
     textAlign: 'center', transition: 'all 0.15s',

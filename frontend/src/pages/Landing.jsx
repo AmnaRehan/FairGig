@@ -347,7 +347,7 @@ const s = {
   },
 
   /* Stats bar */
-  statsBar: { display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: '#2563EB' },
+  statsBar: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', background: '#2563EB' },
   stat:      { padding: '28px 20px', textAlign: 'center', borderRight: '1px solid rgba(255,255,255,0.15)' },
   statValue: { fontFamily: "'Nunito', sans-serif", fontSize: 30, fontWeight: 900, color: '#fff', lineHeight: 1, marginBottom: 5, letterSpacing: '-1px' },
   statLabel: { fontSize: 13, color: 'rgba(255,255,255,0.78)', fontWeight: 600 },
@@ -361,14 +361,14 @@ const s = {
   divider:       { height: 2, background: '#e2e8f0', margin: '0 32px' },
 
   /* Features */
-  grid2:    { display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 16 },
+  grid2:    { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 },
   featCard: { background: '#fff', borderRadius: 20, padding: '26px 24px', border: '2px solid #e2e8f0', transition: 'all 0.2s', cursor: 'default' },
   featIcon: { width: 54, height: 54, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
   featTitle:{ fontFamily: "'Nunito', sans-serif", fontSize: 19, fontWeight: 800, color: '#0f172a', margin: '0 0 8px' },
   featDesc: { fontSize: 15, color: '#64748b', lineHeight: 1.65, margin: 0 },
 
   /* Dashboard split */
-  splitGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, alignItems: 'start' },
+  splitGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 32, alignItems: 'start' },
 
   earningsCard:    { background: '#fff', borderRadius: 20, border: '2px solid #e2e8f0', overflow: 'hidden' },
   earningsHeader:  { background: '#0f172a', padding: '16px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
@@ -397,7 +397,7 @@ const s = {
   certVerified:{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#DCFCE7', color: '#15803d', border: '1.5px solid #86efac', borderRadius: 100, padding: '5px 14px', fontSize: 13, fontWeight: 700 },
 
   /* Steps */
-  stepsGrid: { display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 14 },
+  stepsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 14 },
   stepCard:  { background: '#fff', borderRadius: 20, padding: '24px 18px', border: '2px solid #e2e8f0', textAlign: 'center', transition: 'all 0.2s' },
   stepNum:   { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 38, height: 38, borderRadius: '50%', background: '#2563EB', color: '#fff', fontFamily: "'Nunito', sans-serif", fontWeight: 900, fontSize: 17, margin: '0 auto 14px' },
   stepTitle: { fontFamily: "'Nunito', sans-serif", fontSize: 16, fontWeight: 800, color: '#0f172a', margin: '0 0 8px' },

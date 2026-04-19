@@ -430,7 +430,7 @@ const s = {
 
   /* Stats */
   statsRow: {
-    display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+    display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))',
     gap: 14, maxWidth: 960, margin: '0 auto 24px',
   },
   statCard: {

@@ -246,7 +246,7 @@ export default function Certificate() {
             Choose your date range
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 10 }}>
             <div>
               <label style={labelSt} htmlFor="dateFrom">
                 From Date <span style={{ color: ACCENT }}>*</span>
