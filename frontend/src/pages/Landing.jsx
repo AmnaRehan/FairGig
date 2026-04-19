@@ -271,10 +271,10 @@ export default function Landing() {
           <div style={{ ...s.logoMark, width: 34, height: 34, fontSize: 16 }}>F</div>
           <span style={{ ...s.logoText, fontSize: 18, color: '#e2e8f0' }}>Fair<span style={{ color: '#60a5fa' }}>Gig</span></span>
         </div>
-        <span style={{ fontSize: 12, color: '#475569' }}>© 2026 FairGig · FAST-NU SOFTEC · Built for Pakistan's gig workers</span>
+        <span style={{ fontSize: 12, color: '#FFEDD5' }}>© 2026 FairGig · FAST-NU SOFTEC · Built for Pakistan's gig workers</span>
         <div style={{ display: 'flex', gap: 20 }}>
           {['Privacy', 'Terms', 'Contact'].map(l => (
-            <a key={l} href="#" style={{ fontSize: 12, color: '#475569', textDecoration: 'none' }}>{l}</a>
+            <a key={l} href="#" style={{ fontSize: 12, color: '#FFEDD5', textDecoration: 'none' }}>{l}</a>
           ))}
         </div>
       </footer>
