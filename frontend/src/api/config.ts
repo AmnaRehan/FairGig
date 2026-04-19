@@ -15,7 +15,7 @@ export const anomalyAPI = axios.create({ baseURL: 'https://fairgig-anamoly.onren
 // export const analyticsAPI = axios.create({ baseURL: 'http://localhost:8003' });
 export const analyticsAPI = axios.create({ baseURL: 'https://fairgig-analytics-4akf.onrender.com' });
 // const certificateAPI = axios.create({ baseURL: 'http://localhost:8004' });
-export const certificateAPI = axios.create({ baseURL: 'https://fairgig-certificate-of1w.onrender.com' });
+export const certificateAPI = axios.create({ baseURL: 'https://fairgig-certificate-kqkt.onrender.com' });
 
 // Add auth header to all protected APIs
 [earningsAPI, anomalyAPI, analyticsAPI, certificateAPI, grievanceAPI].forEach(api => {
