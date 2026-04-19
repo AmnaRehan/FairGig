@@ -13,7 +13,7 @@ export const anomalyAPI = axios.create({ baseURL: 'https://fairgig-anamoly.onren
 // export const grievanceAPI = axios.create({ baseURL: 'http://localhost:3001' });
  export const grievanceAPI = axios.create({ baseURL: 'https://fairgig-grievance-ouua.onrender.com' });
 // export const analyticsAPI = axios.create({ baseURL: 'http://localhost:8003' });
-export const analyticsAPI = axios.create({ baseURL: 'https://fairgig-analytics-eeah.onrender.com' });
+export const analyticsAPI = axios.create({ baseURL: 'https://fairgig-analytics-or9n.onrender.com' });
 // const certificateAPI = axios.create({ baseURL: 'http://localhost:8004' });
 export const certificateAPI = axios.create({ baseURL: 'https://fairgig-certificate-of1w.onrender.com' });
 
