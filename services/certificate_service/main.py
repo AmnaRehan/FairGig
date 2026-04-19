@@ -29,86 +29,262 @@ CERTIFICATE_TEMPLATE = """
 <meta charset="UTF-8">
 <title>FairGig Income Certificate</title>
 <style>
-  @media print {{ @page {{ margin: 1.5cm; }} }}
-  body {{ font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a1a; max-width: 800px; margin: 0 auto; padding: 40px 30px; }}
-  .header {{ text-align: center; border-bottom: 3px solid #2563eb; padding-bottom: 20px; margin-bottom: 30px; }}
-  .logo {{ font-size: 28px; font-weight: 700; color: #2563eb; }}
-  .tagline {{ font-size: 13px; color: #6b7280; margin-top: 4px; }}
-  h2 {{ font-size: 20px; color: #111; margin-bottom: 4px; }}
-  .worker-info {{ background: #f0f9ff; border-left: 4px solid #2563eb; padding: 16px 20px; margin: 24px 0; border-radius: 0 8px 8px 0; }}
-  .worker-info p {{ margin: 4px 0; font-size: 14px; }}
-  .summary-grid {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }}
-  .summary-card {{ background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; text-align: center; }}
-  .summary-card .value {{ font-size: 22px; font-weight: 700; color: #2563eb; }}
-  .summary-card .label {{ font-size: 12px; color: #6b7280; margin-top: 4px; }}
-  table {{ width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 13px; }}
-  th {{ background: #2563eb; color: white; padding: 10px 12px; text-align: left; font-weight: 600; }}
-  td {{ padding: 8px 12px; border-bottom: 1px solid #e5e7eb; }}
-  tr:nth-child(even) {{ background: #f8fafc; }}
-  .verified {{ color: #059669; font-weight: 600; }}
-  .pending {{ color: #d97706; }}
-  .disputed {{ color: #dc2626; }}
-  .footer {{ margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 11px; color: #9ca3af; text-align: center; }}
-  .disclaimer {{ background: #fef3c7; border: 1px solid #f59e0b; border-radius: 6px; padding: 12px; font-size: 12px; margin-top: 20px; color: #92400e; }}
-  .print-btn {{ background: #2563eb; color: white; border: none; padding: 10px 24px; border-radius: 6px; cursor: pointer; font-size: 14px; margin-bottom: 20px; }}
-  @media print {{ .print-btn {{ display: none; }} }}
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  @media print {{ @page {{ margin: 1.5cm; }} @media print {{ .print-btn {{ display: none; }} }} }}
+
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+
+  body {{
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at 20% 10%, #0f172a, #020617 60%, #000);
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+  }}
+
+  .shell {{
+    max-width: 820px;
+    margin: 0 auto;
+    animation: fadeup 0.4s ease;
+  }}
+
+  @keyframes fadeup {{ from {{ opacity:0; transform:translateY(10px); }} to {{ opacity:1; transform:translateY(0); }} }}
+  @keyframes shimmer {{ 0% {{ background-position:200% center; }} 100% {{ background-position:-200% center; }} }}
+
+  /* ambient glows */
+  .glow-tl {{
+    position: fixed; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(99,102,241,0.18), transparent 65%);
+    top: -150px; left: -150px; pointer-events: none; z-index: 0;
+  }}
+  .glow-br {{
+    position: fixed; width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(236,72,153,0.12), transparent 65%);
+    bottom: -100px; right: -100px; pointer-events: none; z-index: 0;
+  }}
+
+  /* print button */
+  .print-btn {{
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, #6366f1, #ec4899);
+    color: white; border: none; border-radius: 12px;
+    padding: 11px 24px; font-size: 14px; font-weight: 700;
+    cursor: pointer; margin-bottom: 28px;
+    box-shadow: 0 10px 28px rgba(99,102,241,0.35);
+    transition: all 0.2s;
+  }}
+  .print-btn:hover {{ opacity: 0.88; transform: translateY(-1px); }}
+
+  /* header card */
+  .header-card {{
+    background: rgba(15,23,42,0.9);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(148,163,184,0.12);
+    border-radius: 20px;
+    padding: 32px 36px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    text-align: center;
+  }}
+
+  .shimmer-line {{
+    position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(99,102,241,0.8), rgba(236,72,153,0.8), transparent);
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+  }}
+
+  .logo {{
+    font-size: 30px; font-weight: 700; letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #6366f1, #ec4899);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+  }}
+
+  .tagline {{ font-size: 13px; color: #475569; margin-bottom: 20px; }}
+
+  .cert-title {{
+    font-size: 18px; font-weight: 700; color: #e2e8f0;
+    letter-spacing: -0.02em;
+  }}
+
+  /* worker info card */
+  .info-card {{
+    background: rgba(99,102,241,0.08);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-left: 3px solid #6366f1;
+    border-radius: 0 14px 14px 0;
+    padding: 18px 22px;
+    margin-bottom: 16px;
+  }}
+
+  .info-card p {{ font-size: 13px; color: #94a3b8; margin: 5px 0; line-height: 1.6; }}
+  .info-card p strong {{ color: #c7d2fe; font-weight: 600; }}
+
+  /* summary grid */
+  .summary-grid {{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 16px;
+  }}
+
+  .summary-card {{
+    background: rgba(15,23,42,0.8);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(148,163,184,0.1);
+    border-radius: 16px;
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }}
+
+  .summary-card .value {{
+    font-size: 22px; font-weight: 700; letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #6366f1, #ec4899);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+  }}
+
+  .summary-card .label {{
+    font-size: 11px; color: #475569; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }}
+
+  /* table card */
+  .table-card {{
+    background: rgba(15,23,42,0.9);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(148,163,184,0.12);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  }}
+
+  table {{ width: 100%; border-collapse: collapse; font-size: 13px; }}
+
+  thead tr {{
+    background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(236,72,153,0.15));
+  }}
+
+  th {{
+    padding: 13px 16px; text-align: left;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #94a3b8;
+    border-bottom: 1px solid rgba(148,163,184,0.1);
+  }}
+
+  td {{
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(148,163,184,0.07);
+    color: #cbd5e1;
+  }}
+
+  tbody tr:last-child td {{ border-bottom: none; }}
+  tbody tr:nth-child(even) {{ background: rgba(255,255,255,0.02); }}
+  tbody tr:hover {{ background: rgba(99,102,241,0.06); }}
+
+  .verified {{ color: #34d399; font-weight: 600; }}
+  .pending  {{ color: #fbbf24; font-weight: 600; }}
+  .disputed {{ color: #f87171; font-weight: 600; }}
+
+  /* disclaimer */
+  .disclaimer {{
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-size: 12px;
+    color: #fbbf24;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }}
+
+  .disclaimer strong {{ color: #fde68a; }}
+
+  /* footer */
+  .footer {{
+    text-align: center;
+    font-size: 11px;
+    color: #334155;
+    padding-top: 8px;
+    letter-spacing: 0.04em;
+  }}
 </style>
 </head>
 <body>
-<button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
-<div class="header">
-  <div class="logo">FairGig</div>
-  <div class="tagline">Gig Worker Income Verification Platform</div>
-  <h2 style="margin-top:16px">Income Certificate</h2>
-</div>
+<div class="glow-tl"></div>
+<div class="glow-br"></div>
 
-<div class="worker-info">
-  <p><strong>Worker Name:</strong> {worker_name}</p>
-  <p><strong>Worker ID:</strong> {worker_id}</p>
-  <p><strong>Period:</strong> {date_from} to {date_to}</p>
-  <p><strong>Certificate Generated:</strong> {generated_at}</p>
-</div>
+<div class="shell">
+  <button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
 
-<div class="summary-grid">
-  <div class="summary-card">
-    <div class="value">PKR {total_net:,.0f}</div>
-    <div class="label">Total Net Earnings</div>
+  <!-- header -->
+  <div class="header-card">
+    <div class="shimmer-line"></div>
+    <div class="logo">FairGig</div>
+    <div class="tagline">Gig Worker Income Verification Platform</div>
+    <div class="cert-title">Income Certificate</div>
   </div>
-  <div class="summary-card">
-    <div class="value">{total_shifts}</div>
-    <div class="label">Verified Shifts</div>
+
+  <!-- worker info -->
+  <div class="info-card">
+    <p><strong>Worker Name:</strong> {worker_name}</p>
+    <p><strong>Worker ID:</strong> {worker_id}</p>
+    <p><strong>Period:</strong> {date_from} &rarr; {date_to}</p>
+    <p><strong>Generated:</strong> {generated_at}</p>
   </div>
-  <div class="summary-card">
-    <div class="value">PKR {avg_per_shift:,.0f}</div>
-    <div class="label">Avg. per Shift</div>
+
+  <!-- summary -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="value">PKR {total_net:,.0f}</div>
+      <div class="label">Total Net Earnings</div>
+    </div>
+    <div class="summary-card">
+      <div class="value">{total_shifts}</div>
+      <div class="label">Verified Shifts</div>
+    </div>
+    <div class="summary-card">
+      <div class="value">PKR {avg_per_shift:,.0f}</div>
+      <div class="label">Avg. per Shift</div>
+    </div>
   </div>
-</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Platform</th>
-      <th>Hours</th>
-      <th>Gross (PKR)</th>
-      <th>Deductions (PKR)</th>
-      <th>Net (PKR)</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {rows}
-  </tbody>
-</table>
+  <!-- table -->
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Platform</th>
+          <th>Hours</th>
+          <th>Gross (PKR)</th>
+          <th>Deductions (PKR)</th>
+          <th>Net (PKR)</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows}
+      </tbody>
+    </table>
+  </div>
 
-<div class="disclaimer">
-  <strong>Note:</strong> This certificate is generated from self-reported earnings verified through the FairGig platform.
-  Verified entries have been reviewed by a FairGig verifier against platform screenshots.
-  This document is intended for landlords, microfinance institutions, and informal credit assessments.
-</div>
+  <!-- disclaimer -->
+  <div class="disclaimer">
+    <strong>Note:</strong> This certificate is generated from self-reported earnings verified through the FairGig platform.
+    Verified entries have been reviewed by a FairGig verifier against platform screenshots.
+    Intended for landlords, microfinance institutions, and informal credit assessments.
+  </div>
 
-<div class="footer">
-  FairGig · FAST-NU SOFTEC 2026 · Generated {generated_at}
+  <div class="footer">FairGig &middot; FAST-NU SOFTEC 2026 &middot; Generated {generated_at}</div>
 </div>
 </body>
 </html>
