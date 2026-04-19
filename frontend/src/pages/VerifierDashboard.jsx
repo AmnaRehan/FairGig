@@ -2,20 +2,37 @@ import { useEffect, useState } from 'react';
 import { earningsAPI } from '../api/config';
 import toast from 'react-hot-toast';
 
+const ACCENT   = '#059669';
+const ACCENT_L = '#ECFDF5';
+const ACCENT_D = '#047857';
+
 const STATUS = {
-  verified:     { bg: 'rgba(52,211,153,0.15)',  color: '#34d399', border: 'rgba(52,211,153,0.3)'  },
-  disputed:     { bg: 'rgba(239,68,68,0.15)',   color: '#f87171', border: 'rgba(239,68,68,0.3)'   },
-  pending:      { bg: 'rgba(251,191,36,0.15)',  color: '#fbbf24', border: 'rgba(251,191,36,0.3)'  },
-  unverifiable: { bg: 'rgba(148,163,184,0.15)', color: '#94a3b8', border: 'rgba(148,163,184,0.3)' },
+  verified:     { bg: '#ECFDF5', color: '#065F46', border: '#6EE7B7', label: 'Verified',     icon: '✅' },
+  disputed:     { bg: '#FEF2F2', color: '#7F1D1D', border: '#FCA5A5', label: 'Disputed',     icon: '❌' },
+  pending:      { bg: '#FFFBEB', color: '#78350F', border: '#FCD34D', label: 'Pending',      icon: '⏳' },
+  unverifiable: { bg: '#F8FAFC', color: '#475569', border: '#CBD5E1', label: 'Unverifiable', icon: '❓' },
 };
 
 const FILTERS = ['pending', 'verified', 'disputed', 'all'];
 
+const th = {
+  padding: '14px 16px',
+  textAlign: 'left',
+  fontWeight: 800,
+  color: '#475569',
+  fontSize: 11,
+  letterSpacing: '0.07em',
+  textTransform: 'uppercase',
+  borderBottom: '2px solid #E2E8F0',
+  whiteSpace: 'nowrap',
+  background: '#F8FAFC',
+};
+
 export default function VerifierDashboard() {
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs]     = useState([]);
   const [filter, setFilter] = useState('pending');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError]   = useState('');
 
   const load = async () => {
     setLoading(true); setError('');
@@ -33,7 +50,7 @@ export default function VerifierDashboard() {
   useEffect(() => { load(); }, []);
 
   const verify = async (id, status) => {
-    const notes = prompt(`Notes for ${status} (optional):`) || '';
+    const notes = prompt(`Notes for "${status}" (optional):`) || '';
     try {
       await earningsAPI.put(`/earnings/${id}/verify`, { status, notes });
       toast.success(`Marked as ${status}`);
@@ -44,147 +61,266 @@ export default function VerifierDashboard() {
   };
 
   const filtered = logs.filter(l => filter === 'all' || l.verification_status === filter);
-  const count = (s) => s === 'all' ? logs.length : logs.filter(l => l.verification_status === s).length;
+  const count    = (s) => s === 'all' ? logs.length : logs.filter(l => l.verification_status === s).length;
 
   if (loading) return (
-    <div style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#020617', gap: 16 }}>
-      <div style={{ width: 40, height: 40, border: '3px solid rgba(99,102,241,0.2)', borderTop: '3px solid #6366f1', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-      <span style={{ fontSize: 13, color: '#475569' }}>Loading verifier queue...</span>
+    <div style={{ minHeight: '100vh', background: '#F0FDF8', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, fontFamily: '"Nunito", system-ui, sans-serif' }}>
+      <style>{`@keyframes spin{to{transform:rotate(360deg)}} @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');`}</style>
+      <div style={{ width: 48, height: 48, border: `4px solid #A7F3D0`, borderTop: `4px solid ${ACCENT}`, borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+      <span style={{ fontSize: 16, color: '#065F46', fontWeight: 700 }}>Loading verifier queue...</span>
     </div>
   );
 
   if (error) return (
-    <div style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#020617' }}>
-      <div style={{ textAlign: 'center', color: '#f87171', fontSize: 14 }}>{error}</div>
+    <div style={{ minHeight: '100vh', background: '#F0FDF8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Nunito", system-ui, sans-serif' }}>
+      <div style={{ background: '#fff', borderRadius: 20, border: '2px solid #FCA5A5', padding: '32px 40px', textAlign: 'center' }}>
+        <div style={{ fontSize: 40, marginBottom: 12 }}>⚠️</div>
+        <div style={{ fontSize: 18, fontWeight: 800, color: '#7F1D1D' }}>{error}</div>
+        <button onClick={load} style={{ marginTop: 16, padding: '12px 24px', borderRadius: 12, border: 'none', background: ACCENT, color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit' }}>Try Again</button>
+      </div>
     </div>
   );
 
   return (
-    <div style={{ minHeight: '100vh', background: 'radial-gradient(circle at 20% 10%, #0f172a, #020617 60%, #000)', padding: '32px 20px' }}>
+    <div style={{ minHeight: '100vh', background: '#F0FDF8', fontFamily: '"Nunito", system-ui, sans-serif' }}>
       <style>{`
-        @keyframes fadeup { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-        .fg-row:hover { background: rgba(99,102,241,0.04) !important; }
-        .fg-filterbtn { transition: all 0.18s ease !important; }
-        .fg-filterbtn:hover { border-color: rgba(99,102,241,0.4) !important; }
-        .fg-actbtn { transition: all 0.15s ease !important; }
-        .fg-actbtn:hover { transform: scale(1.08); }
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+        * { font-family: "Nunito", system-ui, sans-serif; }
+        .vd-row:hover { background: #F0FDF8 !important; }
+        .vd-actbtn:hover { transform: scale(1.08); }
+        .vd-filter:hover { border-color: ${ACCENT} !important; }
+        .vd-pill-btn:hover { opacity: 0.85; }
       `}</style>
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', animation: 'fadeup 0.4s ease' }}>
-
-        {/* header */}
-        <div style={{ marginBottom: 28 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-            <div style={{
-              width: 40, height: 40, borderRadius: 12,
-              background: 'linear-gradient(135deg,#6366f1,#ec4899)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 18, boxShadow: '0 8px 24px rgba(99,102,241,0.4)',
-            }}>✅</div>
-            <div>
-              <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#e2e8f0', letterSpacing: '-0.02em' }}>Verifier Dashboard</h1>
-              <p style={{ margin: 0, fontSize: 13, color: '#475569' }}>Review earnings and approve or flag entries</p>
-            </div>
+      {/* ── Header ── */}
+      <div style={{ background: ACCENT, padding: '20px 28px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{ width: 46, height: 46, borderRadius: 14, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>
+            🛡️
+          </div>
+          <div>
+            <h1 style={{ margin: 0, fontSize: 22, fontWeight: 900, color: '#fff', letterSpacing: '-0.01em' }}>Verifier Dashboard</h1>
+            <p style={{ margin: 0, fontSize: 14, color: 'rgba(255,255,255,0.75)', fontWeight: 600 }}>Review, approve, or flag earnings entries</p>
           </div>
         </div>
+        <button
+          onClick={load}
+          style={{ padding: '10px 20px', borderRadius: 12, border: '2px solid rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.15)', color: '#fff', fontSize: 15, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}
+        >
+          🔄 Refresh
+        </button>
+      </div>
 
-        {/* stat pills */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: 12, marginBottom: 24 }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '24px 20px 48px' }}>
+
+        {/* ── Stat cards ── */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14, marginBottom: 24 }}>
           {[
-            { label: 'Pending',      s: 'pending',      icon: '⏳', ...STATUS.pending      },
-            { label: 'Verified',     s: 'verified',     icon: '✅', ...STATUS.verified     },
-            { label: 'Disputed',     s: 'disputed',     icon: '⚠️', ...STATUS.disputed     },
-            { label: 'Total',        s: 'all',          icon: '📋', bg: 'rgba(148,163,184,0.08)', color: '#94a3b8', border: 'rgba(148,163,184,0.15)' },
+            { s: 'pending',      ...STATUS.pending,      label: 'Pending Review' },
+            { s: 'verified',     ...STATUS.verified,     label: 'Verified' },
+            { s: 'disputed',     ...STATUS.disputed,     label: 'Disputed' },
+            { s: 'all',          bg: '#EFF6FF', color: '#1E40AF', border: '#93C5FD', icon: '📋', label: 'Total Entries' },
           ].map(c => (
             <div key={c.s} style={{
-              background: 'rgba(15,23,42,0.8)', backdropFilter: 'blur(12px)',
-              border: '1px solid rgba(148,163,184,0.1)', borderRadius: 14,
-              padding: '16px 18px', position: 'relative', overflow: 'hidden',
-            }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: c.color, opacity: 0.6 }} />
-              <div style={{ fontSize: 18, marginBottom: 6 }}>{c.icon}</div>
-              <div style={{ fontSize: 22, fontWeight: 700, color: c.color }}>{count(c.s)}</div>
-              <div style={{ fontSize: 11, color: '#475569', marginTop: 2 }}>{c.label}</div>
+              background: '#fff',
+              borderRadius: 18,
+              border: `2px solid ${c.border}`,
+              padding: '20px 18px',
+              cursor: 'pointer',
+              transition: 'all 0.15s',
+              boxShadow: filter === c.s ? `0 4px 20px ${c.border}80` : 'none',
+              transform: filter === c.s ? 'translateY(-2px)' : 'none',
+            }}
+              onClick={() => setFilter(c.s)}
+            >
+              <div style={{ fontSize: 22, marginBottom: 8 }}>{c.icon}</div>
+              <div style={{ fontSize: 30, fontWeight: 900, color: c.color, letterSpacing: '-0.02em', lineHeight: 1 }}>
+                {count(c.s)}
+              </div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#64748B', marginTop: 6 }}>{c.label}</div>
+              {filter === c.s && (
+                <div style={{ marginTop: 10, height: 3, borderRadius: 2, background: c.color, opacity: 0.5 }} />
+              )}
             </div>
           ))}
         </div>
 
-        {/* filter tabs */}
-        <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
+        {/* ── Filter tabs ── */}
+        <div style={{ display: 'flex', gap: 10, marginBottom: 18, flexWrap: 'wrap', alignItems: 'center' }}>
+          <span style={{ fontSize: 13, fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.07em', marginRight: 4 }}>Filter:</span>
           {FILTERS.map(s => {
             const active = filter === s;
-            const st = STATUS[s] || { color: '#94a3b8', border: 'rgba(148,163,184,0.3)', bg: 'rgba(148,163,184,0.1)' };
+            const st = STATUS[s] || { color: '#1E40AF', border: '#93C5FD', bg: '#EFF6FF' };
             return (
-              <button key={s} onClick={() => setFilter(s)} className="fg-filterbtn"
+              <button key={s} onClick={() => setFilter(s)} className="vd-filter"
                 style={{
-                  padding: '8px 18px', borderRadius: 10, fontSize: 13, cursor: 'pointer', fontWeight: active ? 600 : 400,
-                  border: active ? `1px solid ${st.border}` : '1px solid rgba(148,163,184,0.1)',
-                  background: active ? st.bg : 'rgba(15,23,42,0.6)',
-                  color: active ? st.color : '#64748b',
-                  backdropFilter: 'blur(8px)',
+                  padding: '10px 20px',
+                  borderRadius: 12,
+                  fontSize: 14,
+                  fontWeight: active ? 800 : 600,
+                  cursor: 'pointer',
+                  border: `2px solid ${active ? st.border : '#E2E8F0'}`,
+                  background: active ? st.bg : '#fff',
+                  color: active ? st.color : '#64748B',
+                  transition: 'all 0.15s',
+                  fontFamily: 'inherit',
                 }}>
-                {s.charAt(0).toUpperCase() + s.slice(1)} <span style={{ opacity: 0.7, fontSize: 11 }}>({count(s)})</span>
+                {s === 'all' ? 'All' : STATUS[s].label} ({count(s)})
               </button>
             );
           })}
         </div>
 
-        {/* table */}
-        <div style={{
-          background: 'rgba(15,23,42,0.8)', backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(148,163,184,0.1)', borderRadius: 16,
-          overflow: 'hidden', boxShadow: '0 8px 30px rgba(0,0,0,0.4)',
-        }}>
+        {/* ── Table ── */}
+        <div style={{ background: '#fff', borderRadius: 20, border: '1.5px solid #E2E8F0', overflow: 'hidden', boxShadow: '0 4px 24px rgba(5,150,105,0.08)' }}>
+
+          {/* Table header row with count */}
+          <div style={{ padding: '16px 20px', borderBottom: '2px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ fontSize: 16, fontWeight: 800, color: '#1E293B' }}>
+              {filter === 'all' ? 'All Entries' : `${STATUS[filter]?.label} Entries`}
+              <span style={{ marginLeft: 10, background: ACCENT_L, color: ACCENT_D, borderRadius: 8, padding: '2px 10px', fontSize: 13, fontWeight: 800 }}>
+                {filtered.length}
+              </span>
+            </div>
+            {filtered.length > 0 && filter === 'pending' && (
+              <span style={{ fontSize: 13, color: '#94A3B8', fontWeight: 600 }}>
+                {filtered.length} shift{filtered.length !== 1 ? 's' : ''} awaiting review
+              </span>
+            )}
+          </div>
+
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
               <thead>
-                <tr style={{ background: 'rgba(2,6,23,0.6)' }}>
-                  {['Worker ID', 'Platform', 'Date', 'Gross', 'Deductions', 'Net', 'Status', 'Screenshot', 'Actions'].map(h => (
-                    <th key={h} style={{ padding: '13px 16px', textAlign: 'left', fontWeight: 600, color: '#475569', fontSize: 11, letterSpacing: '0.06em', textTransform: 'uppercase', borderBottom: '1px solid rgba(148,163,184,0.08)', whiteSpace: 'nowrap' }}>{h}</th>
+                <tr>
+                  {['Worker', 'Platform', 'Date', 'Gross (PKR)', 'Deductions', 'Net (PKR)', 'Status', 'Screenshot', 'Actions'].map(h => (
+                    <th key={h} style={th}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={9} style={{ padding: '48px', textAlign: 'center' }}>
-                      <div style={{ fontSize: 32, marginBottom: 10 }}>📭</div>
-                      <div style={{ color: '#475569', fontSize: 14 }}>No entries for this filter.</div>
+                    <td colSpan={9} style={{ padding: '60px 20px', textAlign: 'center' }}>
+                      <div style={{ fontSize: 40, marginBottom: 12 }}>📭</div>
+                      <div style={{ fontSize: 17, fontWeight: 800, color: '#1E293B', marginBottom: 6 }}>No entries here</div>
+                      <div style={{ fontSize: 14, color: '#94A3B8', fontWeight: 600 }}>
+                        {filter === 'pending' ? 'All caught up! No pending reviews.' : `No ${filter} entries found.`}
+                      </div>
                     </td>
                   </tr>
                 )}
-                {filtered.map(l => {
+                {filtered.map((l, i) => {
                   const st = STATUS[l.verification_status] || STATUS.pending;
                   return (
-                    <tr key={l.id} className="fg-row" style={{ borderBottom: '1px solid rgba(148,163,184,0.05)', transition: 'background 0.15s' }}>
-                      <td style={{ padding: '12px 16px', color: '#475569', fontSize: 11, fontFamily: 'monospace' }}>{l.worker_id?.slice(0, 8)}...</td>
-                      <td style={{ padding: '12px 16px', color: '#e2e8f0', fontWeight: 500 }}>{l.platform}</td>
-                      <td style={{ padding: '12px 16px', color: '#94a3b8', whiteSpace: 'nowrap' }}>{l.shift_date?.slice(0, 10)}</td>
-                      <td style={{ padding: '12px 16px', color: '#94a3b8' }}>PKR {l.gross_earned?.toLocaleString()}</td>
-                      <td style={{ padding: '12px 16px', color: '#f87171' }}>-{l.platform_deductions?.toLocaleString()}</td>
-                      <td style={{ padding: '12px 16px', color: '#e2e8f0', fontWeight: 700 }}>PKR {l.net_received?.toLocaleString()}</td>
-                      <td style={{ padding: '12px 16px' }}>
-                        <span style={{ background: st.bg, color: st.color, border: `1px solid ${st.border}`, padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600 }}>
-                          {l.verification_status}
+                    <tr key={l.id} className="vd-row"
+                      style={{ borderBottom: '1.5px solid #F1F5F9', background: i % 2 === 0 ? '#fff' : '#FAFFFE', transition: 'background 0.15s' }}>
+
+                      {/* Worker */}
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <div style={{ width: 34, height: 34, borderRadius: '50%', background: ACCENT_L, border: `2px solid #A7F3D0`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 900, color: ACCENT_D, flexShrink: 0 }}>
+                            {(l.worker_id || 'W').slice(0, 2).toUpperCase()}
+                          </div>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: '#64748B', fontFamily: 'monospace' }}>
+                            {l.worker_id?.slice(0, 8)}...
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Platform */}
+                      <td style={{ padding: '14px 16px' }}>
+                        <span style={{ background: '#F0FDF8', color: ACCENT_D, border: `1.5px solid #A7F3D0`, padding: '4px 10px', borderRadius: 8, fontSize: 13, fontWeight: 800 }}>
+                          {l.platform}
                         </span>
                       </td>
-                      <td style={{ padding: '12px 16px' }}>
-                        {l.screenshot_path
-                          ? <a href={`http://localhost:8001/${l.screenshot_path}`} target="_blank" rel="noreferrer"
-                              style={{ color: '#818cf8', fontSize: 12, textDecoration: 'none', background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 6, padding: '3px 8px' }}>View</a>
-                          : <span style={{ color: '#334155', fontSize: 11 }}>None</span>}
+
+                      {/* Date */}
+                      <td style={{ padding: '14px 16px', color: '#475569', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                        {l.shift_date?.slice(0, 10)}
                       </td>
-                      <td style={{ padding: '12px 16px' }}>
-                        {l.verification_status === 'pending' && (
-                          <div style={{ display: 'flex', gap: 6 }}>
-                            <button className="fg-actbtn" onClick={() => verify(l.id, 'verified')}
-                              style={{ background: 'rgba(52,211,153,0.15)', color: '#34d399', border: '1px solid rgba(52,211,153,0.3)', borderRadius: 8, padding: '5px 10px', fontSize: 13, cursor: 'pointer', fontWeight: 700 }}>✓</button>
-                            <button className="fg-actbtn" onClick={() => verify(l.id, 'disputed')}
-                              style={{ background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, padding: '5px 10px', fontSize: 13, cursor: 'pointer', fontWeight: 700 }}>✗</button>
-                            <button className="fg-actbtn" onClick={() => verify(l.id, 'unverifiable')}
-                              style={{ background: 'rgba(148,163,184,0.1)', color: '#64748b', border: '1px solid rgba(148,163,184,0.2)', borderRadius: 8, padding: '5px 10px', fontSize: 13, cursor: 'pointer' }}>?</button>
+
+                      {/* Gross */}
+                      <td style={{ padding: '14px 16px', color: '#1E293B', fontWeight: 700 }}>
+                        {l.gross_earned?.toLocaleString('en-PK')}
+                      </td>
+
+                      {/* Deductions */}
+                      <td style={{ padding: '14px 16px' }}>
+                        <span style={{ color: '#DC2626', fontWeight: 700 }}>
+                          -{l.platform_deductions?.toLocaleString('en-PK')}
+                        </span>
+                      </td>
+
+                      {/* Net */}
+                      <td style={{ padding: '14px 16px' }}>
+                        <span style={{ fontSize: 15, fontWeight: 900, color: ACCENT_D }}>
+                          {l.net_received?.toLocaleString('en-PK')}
+                        </span>
+                      </td>
+
+                      {/* Status badge */}
+                      <td style={{ padding: '14px 16px' }}>
+                        <span style={{
+                          background: st.bg,
+                          color: st.color,
+                          border: `1.5px solid ${st.border}`,
+                          padding: '5px 12px',
+                          borderRadius: 20,
+                          fontSize: 12,
+                          fontWeight: 800,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 5,
+                          whiteSpace: 'nowrap',
+                        }}>
+                          {st.icon} {l.verification_status}
+                        </span>
+                      </td>
+
+                      {/* Screenshot */}
+                      <td style={{ padding: '14px 16px' }}>
+                        {l.screenshot_path
+                          ? (
+                            <a
+                              href={`http://localhost:8001/${l.screenshot_path}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              style={{ color: ACCENT_D, fontSize: 13, fontWeight: 800, textDecoration: 'none', background: ACCENT_L, border: `1.5px solid #6EE7B7`, borderRadius: 8, padding: '5px 12px', display: 'inline-block' }}
+                            >
+                              👁 View
+                            </a>
+                          ) : (
+                            <span style={{ color: '#CBD5E1', fontSize: 13, fontWeight: 700 }}>None</span>
+                          )
+                        }
+                      </td>
+
+                      {/* Actions */}
+                      <td style={{ padding: '14px 16px' }}>
+                        {l.verification_status === 'pending' ? (
+                          <div style={{ display: 'flex', gap: 7 }}>
+                            <button className="vd-actbtn"
+                              onClick={() => verify(l.id, 'verified')}
+                              title="Approve"
+                              style={{ background: '#ECFDF5', color: '#065F46', border: '2px solid #6EE7B7', borderRadius: 10, padding: '8px 14px', fontSize: 15, cursor: 'pointer', fontWeight: 900, transition: 'all 0.15s', fontFamily: 'inherit' }}>
+                              ✓
+                            </button>
+                            <button className="vd-actbtn"
+                              onClick={() => verify(l.id, 'disputed')}
+                              title="Dispute"
+                              style={{ background: '#FEF2F2', color: '#7F1D1D', border: '2px solid #FCA5A5', borderRadius: 10, padding: '8px 14px', fontSize: 15, cursor: 'pointer', fontWeight: 900, transition: 'all 0.15s', fontFamily: 'inherit' }}>
+                              ✗
+                            </button>
+                            <button className="vd-actbtn"
+                              onClick={() => verify(l.id, 'unverifiable')}
+                              title="Cannot verify"
+                              style={{ background: '#F8FAFC', color: '#475569', border: '2px solid #CBD5E1', borderRadius: 10, padding: '8px 14px', fontSize: 15, cursor: 'pointer', fontWeight: 900, transition: 'all 0.15s', fontFamily: 'inherit' }}>
+                              ?
+                            </button>
                           </div>
+                        ) : (
+                          <span style={{ fontSize: 12, color: '#CBD5E1', fontWeight: 700 }}>Done</span>
                         )}
                       </td>
                     </tr>
@@ -193,7 +329,19 @@ export default function VerifierDashboard() {
               </tbody>
             </table>
           </div>
+
+          {filtered.length > 0 && (
+            <div style={{ padding: '14px 20px', borderTop: '1.5px solid #F1F5F9', background: '#FAFFFE', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: 13, color: '#64748B', fontWeight: 700 }}>
+                Showing {filtered.length} of {logs.length} total entries
+              </span>
+              <span style={{ fontSize: 12, color: '#94A3B8', fontWeight: 600 }}>
+                Last refreshed just now
+              </span>
+            </div>
+          )}
         </div>
+
       </div>
     </div>
   );

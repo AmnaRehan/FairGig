@@ -4,30 +4,34 @@ import { useAuth } from '../context/auth';
 import toast from 'react-hot-toast';
 
 const CATEGORIES = ['commission', 'deactivation', 'payment', 'other'];
-const PLATFORMS = ['Careem', 'Foodpanda', 'Uber', 'Bykea', 'Other'];
+const PLATFORMS  = ['Careem', 'Foodpanda', 'Uber', 'Bykea', 'InDrive', 'Other'];
 
-const STATUS_STYLE = {
-  open:      { color: '#60a5fa', border: 'rgba(96,165,250,0.3)',  bg: 'rgba(96,165,250,0.08)',  left: '#3b82f6' },
-  escalated: { color: '#f87171', border: 'rgba(239,68,68,0.3)',   bg: 'rgba(239,68,68,0.08)',   left: '#ef4444' },
-  resolved:  { color: '#34d399', border: 'rgba(52,211,153,0.3)',  bg: 'rgba(52,211,153,0.08)',  left: '#10b981' },
+const CAT_META = {
+  commission:   { label: 'Commission',   icon: '💸', bg: '#EDE9FE', color: '#6d28d9', border: '#c4b5fd' },
+  deactivation: { label: 'Deactivation', icon: '🚫', bg: '#FEE2E2', color: '#dc2626', border: '#fca5a5' },
+  payment:      { label: 'Payment',      icon: '💳', bg: '#FEF3C7', color: '#b45309', border: '#fcd34d' },
+  other:        { label: 'Other',        icon: '📋', bg: '#F1F5F9', color: '#475569', border: '#cbd5e1' },
 };
 
-const CAT_STYLE = {
-  commission:  { color: '#a78bfa', bg: 'rgba(167,139,250,0.12)' },
-  deactivation:{ color: '#f87171', bg: 'rgba(239,68,68,0.12)'   },
-  payment:     { color: '#fbbf24', bg: 'rgba(251,191,36,0.12)'  },
-  other:       { color: '#94a3b8', bg: 'rgba(148,163,184,0.12)' },
+const STATUS_META = {
+  open:      { label: 'Open',      icon: '🔵', bg: '#EFF6FF', color: '#1d4ed8', border: '#93c5fd', left: '#3b82f6' },
+  escalated: { label: 'Escalated', icon: '🔴', bg: '#FEE2E2', color: '#dc2626', border: '#fca5a5', left: '#ef4444' },
+  resolved:  { label: 'Resolved',  icon: '🟢', bg: '#DCFCE7', color: '#15803d', border: '#86efac', left: '#10b981' },
 };
+
+const PLATFORM_ICONS = { Careem: '🟢', Foodpanda: '🔴', Uber: '⚫', Bykea: '🔵', InDrive: '🟡', Other: '⚪' };
 
 export default function GrievanceBoard() {
   const { user } = useAuth();
-  const [grievances, setGrievances] = useState([]);
-  const [form, setForm] = useState({ platform: 'Careem', category: 'commission', title: '', description: '', city: '' });
-  const [loading, setLoading] = useState(false);
+  const [grievances, setGrievances]   = useState([]);
+  const [form, setForm]               = useState({ platform: 'Careem', category: 'commission', title: '', description: '', city: '' });
+  const [loading, setLoading]         = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
-  const [pageError, setPageError] = useState('');
-  const [filter, setFilter] = useState({ platform: '', category: '', status: '' });
-  const [showForm, setShowForm] = useState(false);
+  const [pageError, setPageError]     = useState('');
+  const [filter, setFilter]           = useState({ platform: '', category: '', status: '' });
+  const [showForm, setShowForm]       = useState(false);
+  const [expandedId, setExpandedId]   = useState(null);
+  const [activeTab, setActiveTab]     = useState('all');
 
   const load = useCallback(async () => {
     const params = new URLSearchParams(Object.entries(filter).filter(([, v]) => v));
@@ -75,202 +79,288 @@ export default function GrievanceBoard() {
     } catch { toast.error('Failed to update status'); }
   };
 
-  const inp = {
-    width: '100%', padding: '11px 14px', borderRadius: 12,
-    border: '1px solid rgba(148,163,184,0.15)',
-    background: 'rgba(2,6,23,0.6)', color: '#e2e8f0',
-    fontSize: 14, outline: 'none', boxSizing: 'border-box', transition: 'all 0.2s',
-  };
+  /* Derived counts for tabs */
+  const counts = { all: grievances.length, open: 0, escalated: 0, resolved: 0 };
+  grievances.forEach(g => { if (counts[g.status] !== undefined) counts[g.status]++; });
+
+  const displayed = activeTab === 'all' ? grievances : grievances.filter(g => g.status === activeTab);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'radial-gradient(circle at 20% 10%, #0f172a, #020617 60%, #000)', padding: '32px 20px' }}>
-      <style>{`
-        @keyframes fadeup { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes shimmer { 0%{background-position:200% center} 100%{background-position:-200% center} }
-        .fg-inp:focus { border-color: rgba(99,102,241,0.6) !important; box-shadow: 0 0 0 3px rgba(99,102,241,0.12) !important; outline: none !important; }
-        .fg-inp::placeholder { color: #334155; }
-        .fg-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .fg-card:hover { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(0,0,0,0.5) !important; }
-        .fg-upvote:hover { background: rgba(99,102,241,0.2) !important; border-color: rgba(99,102,241,0.4) !important; color: #a5b4fc !important; }
-        .fg-pill:hover { border-color: rgba(99,102,241,0.4) !important; }
-      `}</style>
+    <div style={s.root}>
+      <style>{CSS}</style>
 
-      {/* ambient glows */}
-      <div style={{ position: 'fixed', width: 500, height: 500, background: 'radial-gradient(circle,rgba(99,102,241,0.18),transparent 65%)', top: '-150px', left: '-150px', pointerEvents: 'none' }} />
-      <div style={{ position: 'fixed', width: 400, height: 400, background: 'radial-gradient(circle,rgba(236,72,153,0.12),transparent 65%)', bottom: '-100px', right: '-100px', pointerEvents: 'none' }} />
+      {/* ── PAGE HEADER ── */}
+      <div style={s.pageHeader}>
+        <div style={s.headerLeft}>
+          <div style={s.headerIcon}>📢</div>
+          <div>
+            <h1 style={s.pageTitle}>Grievance Board</h1>
+            <p style={s.pageDesc}>Share complaints · Get support · Fight unfair treatment</p>
+          </div>
+        </div>
+        {user.role === 'worker' && (
+          <button
+            onClick={() => setShowForm(f => !f)}
+            className={showForm ? 'fg-cancel-btn' : 'fg-post-btn'}
+            style={showForm ? s.cancelBtn : s.postBtn}
+          >
+            {showForm ? '✕  Cancel' : '+ Post Complaint'}
+          </button>
+        )}
+      </div>
 
-      <div style={{ maxWidth: 900, margin: '0 auto', animation: 'fadeup 0.4s ease' }}>
-
-        {/* header */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 28 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 14, background: 'linear-gradient(135deg,#6366f1,#ec4899)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, boxShadow: '0 8px 24px rgba(99,102,241,0.4)' }}>📢</div>
+      {/* ── SUMMARY STATS ── */}
+      <div style={s.statsRow}>
+        {[
+          { label: 'Total Complaints', value: counts.all,      bg: '#EFF6FF', color: '#1d4ed8', icon: '📋' },
+          { label: 'Open',             value: counts.open,      bg: '#EFF6FF', color: '#1d4ed8', icon: '🔵' },
+          { label: 'Escalated',        value: counts.escalated, bg: '#FEE2E2', color: '#dc2626', icon: '🔴' },
+          { label: 'Resolved',         value: counts.resolved,  bg: '#DCFCE7', color: '#15803d', icon: '🟢' },
+        ].map(st => (
+          <div key={st.label} style={{ ...s.statCard, background: st.bg }}>
+            <span style={{ fontSize: 22 }}>{st.icon}</span>
             <div>
-              <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: '#e2e8f0', letterSpacing: '-0.02em' }}>Grievance Board</h1>
-              <p style={{ margin: 0, fontSize: 13, color: '#475569' }}>Share complaints and support requests — moderated by advocates</p>
+              <div style={{ ...s.statVal, color: st.color }}>{st.value}</div>
+              <div style={s.statLabel}>{st.label}</div>
             </div>
           </div>
-          {user.role === 'worker' && (
-            <button onClick={() => setShowForm(f => !f)}
-              style={{ padding: '10px 20px', borderRadius: 12, border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: 13, color: 'white', background: 'linear-gradient(135deg,#6366f1,#ec4899)', boxShadow: '0 8px 24px rgba(99,102,241,0.35)', transition: 'all 0.2s' }}>
-              {showForm ? '✕ Cancel' : '+ Post Complaint'}
+        ))}
+      </div>
+
+      {/* ── POST FORM ── */}
+      {user.role === 'worker' && showForm && (
+        <div style={s.formCard} className="fg-fadein">
+          <div style={s.formCardHeader}>
+            <span style={{ fontSize: 20 }}>📝</span>
+            <h3 style={s.formCardTitle}>Post a New Complaint</h3>
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            {/* Platform */}
+            <div style={s.fieldWrap}>
+              <label style={s.label}>Which Platform?</label>
+              <div style={s.pillRow}>
+                {PLATFORMS.map(p => (
+                  <button type="button" key={p}
+                    onClick={() => setForm(f => ({ ...f, platform: p }))}
+                    className="fg-pill-btn"
+                    style={{
+                      ...s.pillBtn,
+                      background: form.platform === p ? '#DBEAFE' : '#F8FAFC',
+                      border:     form.platform === p ? '2px solid #2563EB' : '2px solid #e2e8f0',
+                      color:      form.platform === p ? '#1d4ed8' : '#64748b',
+                      fontWeight: form.platform === p ? 800 : 600,
+                    }}>
+                    {PLATFORM_ICONS[p]} {p}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Category */}
+            <div style={s.fieldWrap}>
+              <label style={s.label}>What's the Issue?</label>
+              <div style={s.pillRow}>
+                {CATEGORIES.map(c => {
+                  const m = CAT_META[c];
+                  const active = form.category === c;
+                  return (
+                    <button type="button" key={c}
+                      onClick={() => setForm(f => ({ ...f, category: c }))}
+                      className="fg-pill-btn"
+                      style={{
+                        ...s.pillBtn,
+                        background: active ? m.bg     : '#F8FAFC',
+                        border:     active ? `2px solid ${m.border}` : '2px solid #e2e8f0',
+                        color:      active ? m.color  : '#64748b',
+                        fontWeight: active ? 800 : 600,
+                      }}>
+                      {m.icon} {m.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Title */}
+            <div style={s.fieldWrap}>
+              <label style={s.label} htmlFor="gb-title">Complaint Title</label>
+              <div style={{ position: 'relative' }}>
+                <span style={s.inputIcon}>✏️</span>
+                <input id="gb-title" value={form.title}
+                  onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
+                  placeholder="Short summary of your complaint"
+                  required className="fg-input" style={s.input} />
+              </div>
+            </div>
+
+            {/* Description */}
+            <div style={s.fieldWrap}>
+              <label style={s.label} htmlFor="gb-desc">What Happened?</label>
+              <textarea id="gb-desc" value={form.description}
+                onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+                rows={4} placeholder="Describe the issue in detail. Include dates, amounts, and what the platform did..."
+                required className="fg-input fg-textarea"
+                style={{ ...s.input, ...s.textarea }} />
+            </div>
+
+            {/* City */}
+            <div style={{ ...s.fieldWrap, maxWidth: 280 }}>
+              <label style={s.label} htmlFor="gb-city">Your City (Optional)</label>
+              <div style={{ position: 'relative' }}>
+                <span style={s.inputIcon}>📍</span>
+                <input id="gb-city" value={form.city}
+                  onChange={e => setForm(f => ({ ...f, city: e.target.value }))}
+                  placeholder="e.g. Lahore" className="fg-input" style={s.input} />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+              <button type="submit" disabled={loading} className="fg-submit-btn" style={s.submitBtn}>
+                {loading
+                  ? <><span className="fg-spinner" style={s.spinner} /> Posting...</>
+                  : '📢  Post Complaint'
+                }
+              </button>
+              <p style={{ fontSize: 13, color: '#94a3b8', margin: 0 }}>
+                Your complaint will be reviewed by an advocate.
+              </p>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* ── FILTERS + TABS ── */}
+      <div style={s.filterBar}>
+        {/* Status tabs */}
+        <div style={s.tabRow}>
+          {[
+            { key: 'all',      label: `All (${counts.all})` },
+            { key: 'open',      label: `Open (${counts.open})` },
+            { key: 'escalated', label: `Escalated (${counts.escalated})` },
+            { key: 'resolved',  label: `Resolved (${counts.resolved})` },
+          ].map(t => (
+            <button key={t.key} onClick={() => setActiveTab(t.key)}
+              className="fg-tab"
+              style={{
+                ...s.tab,
+                background:  activeTab === t.key ? '#2563EB' : 'transparent',
+                color:       activeTab === t.key ? '#fff'    : '#64748b',
+                borderColor: activeTab === t.key ? '#2563EB' : '#e2e8f0',
+              }}>
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Search filters */}
+        <div style={s.filterInputRow}>
+          {[
+            { key: 'platform', placeholder: '🔍 Platform', width: 150 },
+            { key: 'category', placeholder: '🔍 Category', width: 150 },
+          ].map(f => (
+            <input key={f.key} value={filter[f.key]}
+              onChange={e => setFilter(fv => ({ ...fv, [f.key]: e.target.value }))}
+              placeholder={f.placeholder}
+              className="fg-filter-input"
+              style={{ ...s.filterInput, width: f.width }} />
+          ))}
+          {(filter.platform || filter.category || filter.status) && (
+            <button onClick={() => setFilter({ platform: '', category: '', status: '' })}
+              className="fg-clear-btn" style={s.clearBtn}>
+              ✕ Clear
             </button>
           )}
+          <span style={s.resultCount}>{displayed.length} result{displayed.length !== 1 ? 's' : ''}</span>
         </div>
+      </div>
 
-        {/* post form */}
-        {user.role === 'worker' && showForm && (
-          <div style={{
-            background: 'rgba(15,23,42,0.9)', backdropFilter: 'blur(24px)',
-            border: '1px solid rgba(148,163,184,0.12)', borderRadius: 20,
-            padding: 28, marginBottom: 24, position: 'relative', overflow: 'hidden',
-            boxShadow: '0 30px 80px rgba(0,0,0,0.6)',
-            animation: 'fadeup 0.3s ease',
-          }}>
-            <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: 1, background: 'linear-gradient(90deg,transparent,rgba(99,102,241,0.8),rgba(236,72,153,0.8),transparent)', backgroundSize: '200% auto', animation: 'shimmer 3s linear infinite' }} />
-
-            <h3 style={{ margin: '0 0 20px', fontSize: 15, fontWeight: 700, color: '#e2e8f0' }}>Post a Complaint</h3>
-
-            <form onSubmit={handleSubmit}>
-              {/* platform pills */}
-              <div style={{ marginBottom: 18 }}>
-                <label style={{ fontSize: 11, letterSpacing: '0.08em', color: '#64748b', fontWeight: 600, display: 'block', marginBottom: 8 }}>PLATFORM</label>
-                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  {PLATFORMS.map(p => (
-                    <button type="button" key={p} className="fg-pill"
-                      onClick={() => setForm(f => ({ ...f, platform: p }))}
-                      style={{ padding: '6px 14px', borderRadius: 20, fontSize: 12, cursor: 'pointer', transition: 'all 0.15s', border: form.platform === p ? '1px solid rgba(99,102,241,0.6)' : '1px solid rgba(148,163,184,0.12)', background: form.platform === p ? 'rgba(99,102,241,0.15)' : 'rgba(2,6,23,0.5)', color: form.platform === p ? '#a5b4fc' : '#64748b', fontWeight: form.platform === p ? 600 : 400 }}>
-                      {p}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* category pills */}
-              <div style={{ marginBottom: 18 }}>
-                <label style={{ fontSize: 11, letterSpacing: '0.08em', color: '#64748b', fontWeight: 600, display: 'block', marginBottom: 8 }}>CATEGORY</label>
-                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  {CATEGORIES.map(c => {
-                    const cs = CAT_STYLE[c];
-                    const active = form.category === c;
-                    return (
-                      <button type="button" key={c} onClick={() => setForm(f => ({ ...f, category: c }))}
-                        style={{ padding: '6px 14px', borderRadius: 20, fontSize: 12, cursor: 'pointer', transition: 'all 0.15s', border: active ? `1px solid ${cs.color}55` : '1px solid rgba(148,163,184,0.12)', background: active ? cs.bg : 'rgba(2,6,23,0.5)', color: active ? cs.color : '#64748b', fontWeight: active ? 600 : 400 }}>
-                        {c}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div style={{ marginBottom: 14 }}>
-                <label style={{ fontSize: 11, letterSpacing: '0.08em', color: '#64748b', fontWeight: 600, display: 'block', marginBottom: 7 }}>TITLE</label>
-                <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-                  placeholder="Short summary of your complaint" required className="fg-inp" style={inp} />
-              </div>
-
-              <div style={{ marginBottom: 14 }}>
-                <label style={{ fontSize: 11, letterSpacing: '0.08em', color: '#64748b', fontWeight: 600, display: 'block', marginBottom: 7 }}>DESCRIPTION</label>
-                <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                  rows={4} placeholder="Describe what happened in detail..."
-                  required className="fg-inp" style={{ ...inp, resize: 'vertical', fontFamily: 'inherit' }} />
-              </div>
-
-              <div style={{ marginBottom: 20 }}>
-                <label style={{ fontSize: 11, letterSpacing: '0.08em', color: '#64748b', fontWeight: 600, display: 'block', marginBottom: 7 }}>CITY (OPTIONAL)</label>
-                <input value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))}
-                  placeholder="e.g. Lahore" className="fg-inp" style={inp} />
-              </div>
-
-              <button type="submit" disabled={loading}
-                style={{ padding: '12px 28px', borderRadius: 12, border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: 14, color: 'white', background: 'linear-gradient(135deg,#6366f1,#ec4899)', boxShadow: '0 10px 28px rgba(99,102,241,0.35)', transition: 'all 0.2s', opacity: loading ? 0.6 : 1 }}>
-                {loading ? 'Posting...' : 'Post Complaint →'}
-              </button>
-            </form>
-          </div>
-        )}
-
-        {/* filters */}
-        <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
-          {[['platform', 'Platform'], ['category', 'Category'], ['status', 'Status']].map(([key, label]) => (
-            <input key={key} placeholder={`Filter by ${label}`} value={filter[key]}
-              onChange={e => setFilter(f => ({ ...f, [key]: e.target.value }))}
-              className="fg-inp"
-              style={{ padding: '9px 14px', borderRadius: 10, border: '1px solid rgba(148,163,184,0.15)', background: 'rgba(15,23,42,0.8)', color: '#e2e8f0', fontSize: 13, outline: 'none', width: 160, backdropFilter: 'blur(8px)' }} />
-          ))}
-          <button onClick={() => setFilter({ platform: '', category: '', status: '' })}
-            style={{ padding: '9px 16px', borderRadius: 10, border: '1px solid rgba(148,163,184,0.12)', background: 'rgba(15,23,42,0.6)', color: '#64748b', fontSize: 13, cursor: 'pointer', backdropFilter: 'blur(8px)' }}>
-            Clear
-          </button>
-          <span style={{ fontSize: 12, color: '#334155', marginLeft: 4 }}>{grievances.length} results</span>
+      {/* ── LOADING / ERROR ── */}
+      {pageLoading && (
+        <div style={s.emptyState}>
+          <span className="fg-spinner-lg" style={s.spinnerLg} />
+          <p style={{ color: '#64748b', fontSize: 15, margin: 0 }}>Loading complaints...</p>
         </div>
+      )}
+      {pageError && (
+        <div style={s.errorBox}>
+          <span style={{ fontSize: 22 }}>⚠️</span>
+          <p style={{ margin: 0, color: '#dc2626', fontWeight: 600 }}>{pageError}</p>
+          <button onClick={load} style={s.retryBtn} className="fg-retry-btn">Retry</button>
+        </div>
+      )}
 
-        {/* loading / error */}
-        {pageLoading && (
-          <div style={{ textAlign: 'center', padding: 48 }}>
-            <div style={{ width: 36, height: 36, border: '3px solid rgba(99,102,241,0.2)', borderTop: '3px solid #6366f1', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 12px' }} />
-            <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-            <span style={{ fontSize: 13, color: '#475569' }}>Loading grievances...</span>
-          </div>
-        )}
-        {pageError && <div style={{ textAlign: 'center', color: '#f87171', padding: 28, fontSize: 14 }}>{pageError}</div>}
-
-        {/* grievance cards */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {grievances.map(g => {
-            const st = STATUS_STYLE[g.status] || STATUS_STYLE.open;
-            const cs = CAT_STYLE[g.category] || CAT_STYLE.other;
+      {/* ── GRIEVANCE CARDS ── */}
+      {!pageLoading && !pageError && (
+        <div style={s.cardList}>
+          {displayed.map((g, idx) => {
+            const st = STATUS_META[g.status] || STATUS_META.open;
+            const cm = CAT_META[g.category]  || CAT_META.other;
+            const expanded = expandedId === g.id;
             return (
-              <div key={g.id} className="fg-card" style={{
-                background: 'rgba(15,23,42,0.8)', backdropFilter: 'blur(16px)',
-                border: `1px solid rgba(148,163,184,0.1)`,
-                borderLeft: `3px solid ${st.left}`,
-                borderRadius: 16, padding: '20px 24px',
-                boxShadow: '0 8px 30px rgba(0,0,0,0.4)',
-              }}>
-                {/* top row */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                    <span style={{ fontWeight: 700, fontSize: 15, color: '#e2e8f0' }}>{g.title}</span>
-                    <span style={{ background: 'rgba(99,102,241,0.12)', color: '#818cf8', padding: '2px 9px', borderRadius: 20, fontSize: 11, fontWeight: 600, border: '1px solid rgba(99,102,241,0.2)' }}>{g.platform}</span>
-                    <span style={{ background: cs.bg, color: cs.color, padding: '2px 9px', borderRadius: 20, fontSize: 11, fontWeight: 500 }}>{g.category}</span>
+              <div key={g.id} className="fg-gcard" style={{ ...s.gCard, borderLeft: `5px solid ${st.left}`, animationDelay: `${idx * 40}ms` }}>
+
+                {/* Card top row */}
+                <div style={s.gCardTop}>
+                  {/* Status strip */}
+                  <div style={{ ...s.statusBadge, background: st.bg, color: st.color, border: `1.5px solid ${st.border}` }}>
+                    {st.icon} {st.label}
                   </div>
-                  <span style={{ fontSize: 11, color: '#334155' }}>{new Date(g.created_at).toLocaleDateString()}</span>
+
+                  {/* Platform + Category */}
+                  <div style={s.badgeRow}>
+                    <span style={s.platformBadge}>
+                      {PLATFORM_ICONS[g.platform]} {g.platform}
+                    </span>
+                    <span style={{ ...s.catBadge, background: cm.bg, color: cm.color, border: `1.5px solid ${cm.border}` }}>
+                      {cm.icon} {cm.label}
+                    </span>
+                    {g.city && <span style={s.cityBadge}>📍 {g.city}</span>}
+                  </div>
+
+                  <span style={s.dateText}>{new Date(g.created_at).toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                 </div>
 
-                <p style={{ color: '#94a3b8', fontSize: 13, margin: '0 0 14px', lineHeight: 1.7 }}>{g.description}</p>
+                {/* Title */}
+                <h3 style={s.gCardTitle}>{g.title}</h3>
 
-                {/* advocate note */}
+                {/* Description — expandable */}
+                <p style={{ ...s.gCardDesc, WebkitLineClamp: expanded ? 'unset' : 3, overflow: expanded ? 'visible' : 'hidden', display: '-webkit-box', WebkitBoxOrient: 'vertical' }}>
+                  {g.description}
+                </p>
+                {g.description && g.description.length > 180 && (
+                  <button onClick={() => setExpandedId(expanded ? null : g.id)}
+                    className="fg-expand-btn" style={s.expandBtn}>
+                    {expanded ? '▲ Show less' : '▼ Read more'}
+                  </button>
+                )}
+
+                {/* Advocate note */}
                 {g.advocate_notes && (
-                  <div style={{ background: 'rgba(52,211,153,0.08)', border: '1px solid rgba(52,211,153,0.2)', borderRadius: 10, padding: '8px 14px', fontSize: 12, color: '#34d399', marginBottom: 14 }}>
-                    ⚖️ Advocate: {g.advocate_notes}
+                  <div style={s.advocateNote}>
+                    <span style={{ fontSize: 18 }}>⚖️</span>
+                    <div>
+                      <p style={s.advocateNoteTitle}>Advocate Response</p>
+                      <p style={s.advocateNoteText}>{g.advocate_notes}</p>
+                    </div>
                   </div>
                 )}
 
-                {/* bottom row */}
-                <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-                  <button onClick={() => upvote(g.id)} className="fg-upvote"
-                    style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(148,163,184,0.08)', border: '1px solid rgba(148,163,184,0.15)', borderRadius: 8, padding: '5px 12px', fontSize: 12, cursor: 'pointer', color: '#64748b', transition: 'all 0.15s', fontWeight: 600 }}>
-                    ▲ {g.upvotes}
+                {/* Bottom action row */}
+                <div style={s.gCardBottom}>
+                  <button onClick={() => upvote(g.id)} className="fg-upvote-btn" style={s.upvoteBtn}>
+                    ▲ Support ({g.upvotes})
                   </button>
 
-                  <span style={{ background: st.bg, color: st.color, border: `1px solid ${st.border}`, padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600 }}>
-                    {g.status}
-                  </span>
-
-                  {g.city && (
-                    <span style={{ fontSize: 12, color: '#475569' }}>📍 {g.city}</span>
-                  )}
-
                   {user.role === 'advocate' && (
-                    <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
+                    <div style={{ display: 'flex', gap: 10, marginLeft: 'auto' }}>
                       <button onClick={() => updateStatus(g.id, 'escalated')}
-                        style={{ background: 'rgba(239,68,68,0.12)', color: '#f87171', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 8, padding: '5px 12px', fontSize: 12, cursor: 'pointer', fontWeight: 600, transition: 'all 0.15s' }}>
-                        Escalate
+                        className="fg-escalate-btn" style={s.escalateBtn}>
+                        🔴 Escalate
                       </button>
                       <button onClick={() => updateStatus(g.id, 'resolved')}
-                        style={{ background: 'rgba(52,211,153,0.12)', color: '#34d399', border: '1px solid rgba(52,211,153,0.25)', borderRadius: 8, padding: '5px 12px', fontSize: 12, cursor: 'pointer', fontWeight: 600, transition: 'all 0.15s' }}>
-                        Resolve
+                        className="fg-resolve-btn" style={s.resolveBtn}>
+                        🟢 Resolve
                       </button>
                     </div>
                   )}
@@ -279,15 +369,250 @@ export default function GrievanceBoard() {
             );
           })}
 
-          {!pageLoading && grievances.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-              <div style={{ fontSize: 40, marginBottom: 12 }}>📭</div>
-              <div style={{ color: '#475569', fontSize: 15, marginBottom: 4 }}>No complaints found</div>
-              <div style={{ color: '#334155', fontSize: 13 }}>Try clearing filters or post the first complaint.</div>
+          {displayed.length === 0 && (
+            <div style={s.emptyState}>
+              <span style={{ fontSize: 52 }}>📭</span>
+              <p style={{ color: '#64748b', fontSize: 17, fontWeight: 700, margin: '4px 0' }}>No complaints found</p>
+              <p style={{ color: '#94a3b8', fontSize: 14, margin: 0 }}>Try clearing filters or post the first complaint.</p>
             </div>
           )}
         </div>
-      </div>
+      )}
     </div>
   );
 }
+
+/* ─────────────────────────────────────────
+   STYLES
+───────────────────────────────────────── */
+const s = {
+  root: {
+    minHeight: '100vh',
+    background: '#F0F6FF',
+    padding: '32px 24px 60px',
+    fontFamily: "'Source Sans 3', 'Segoe UI', sans-serif",
+    fontSize: 16,
+    color: '#1e293b',
+  },
+
+  /* Header */
+  pageHeader: {
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    flexWrap: 'wrap', gap: 16, marginBottom: 24,
+    maxWidth: 960, margin: '0 auto 24px',
+  },
+  headerLeft: { display: 'flex', alignItems: 'center', gap: 16 },
+  headerIcon: {
+    width: 56, height: 56, borderRadius: 18,
+    background: 'linear-gradient(135deg, #2563EB, #1d4ed8)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    fontSize: 26, boxShadow: '0 8px 24px rgba(37,99,235,0.35)',
+    flexShrink: 0,
+  },
+  pageTitle: { fontFamily: "'Nunito', sans-serif", fontSize: 28, fontWeight: 900, color: '#0f172a', margin: '0 0 4px', letterSpacing: '-0.8px' },
+  pageDesc:  { fontSize: 15, color: '#64748b', margin: 0 },
+
+  postBtn: {
+    padding: '13px 26px', borderRadius: 14, border: 'none',
+    background: 'linear-gradient(135deg, #2563EB, #1d4ed8)',
+    color: '#fff', fontSize: 16, fontWeight: 800,
+    cursor: 'pointer', transition: 'all 0.2s',
+    boxShadow: '0 6px 20px rgba(37,99,235,0.35)',
+    fontFamily: "'Nunito', sans-serif",
+  },
+  cancelBtn: {
+    padding: '13px 26px', borderRadius: 14,
+    border: '2px solid #e2e8f0', background: '#fff',
+    color: '#64748b', fontSize: 16, fontWeight: 700,
+    cursor: 'pointer', transition: 'all 0.2s',
+    fontFamily: "'Source Sans 3', sans-serif",
+  },
+
+  /* Stats */
+  statsRow: {
+    display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: 14, maxWidth: 960, margin: '0 auto 24px',
+  },
+  statCard: {
+    borderRadius: 16, padding: '18px 20px',
+    display: 'flex', alignItems: 'center', gap: 14,
+    border: '2px solid #e2e8f0',
+  },
+  statVal:   { fontFamily: "'Nunito', sans-serif", fontSize: 26, fontWeight: 900, lineHeight: 1, letterSpacing: '-1px' },
+  statLabel: { fontSize: 13, color: '#64748b', fontWeight: 600, marginTop: 2 },
+
+  /* Form card */
+  formCard: {
+    maxWidth: 960, margin: '0 auto 28px',
+    background: '#fff', borderRadius: 20,
+    border: '2px solid #e2e8f0',
+    padding: '28px 32px',
+    boxShadow: '0 8px 32px rgba(37,99,235,0.08)',
+  },
+  formCardHeader: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24, paddingBottom: 18, borderBottom: '2px solid #f1f5f9' },
+  formCardTitle:  { fontFamily: "'Nunito', sans-serif", fontSize: 20, fontWeight: 900, color: '#0f172a', margin: 0 },
+
+  fieldWrap: { marginBottom: 20 },
+  label: { display: 'block', fontSize: 15, fontWeight: 700, color: '#374151', marginBottom: 10 },
+  pillRow: { display: 'flex', gap: 8, flexWrap: 'wrap' },
+  pillBtn: {
+    padding: '9px 16px', borderRadius: 100, fontSize: 14,
+    cursor: 'pointer', transition: 'all 0.15s',
+    fontFamily: "'Source Sans 3', sans-serif",
+    display: 'flex', alignItems: 'center', gap: 5,
+  },
+  inputIcon: { position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontSize: 18, pointerEvents: 'none' },
+  input: {
+    width: '100%', padding: '13px 16px 13px 46px',
+    borderRadius: 14, border: '2px solid #e2e8f0',
+    background: '#F8FAFC', color: '#0f172a',
+    fontSize: 16, outline: 'none', boxSizing: 'border-box',
+    fontFamily: "'Source Sans 3', sans-serif", transition: 'all 0.2s',
+  },
+  textarea: { resize: 'vertical', paddingLeft: 16, minHeight: 100 },
+
+  submitBtn: {
+    padding: '14px 28px', borderRadius: 14, border: 'none',
+    background: 'linear-gradient(135deg, #2563EB, #1d4ed8)',
+    color: '#fff', fontSize: 16, fontWeight: 800,
+    cursor: 'pointer', transition: 'all 0.2s',
+    boxShadow: '0 6px 20px rgba(37,99,235,0.35)',
+    fontFamily: "'Nunito', sans-serif",
+    display: 'flex', alignItems: 'center', gap: 8,
+  },
+  spinner: { width: 18, height: 18, borderRadius: '50%', border: '2.5px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', display: 'inline-block' },
+
+  /* Filter bar */
+  filterBar: {
+    maxWidth: 960, margin: '0 auto 20px',
+    background: '#fff', borderRadius: 16,
+    border: '2px solid #e2e8f0', padding: '16px 20px',
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    flexWrap: 'wrap', gap: 12,
+  },
+  tabRow: { display: 'flex', gap: 8, flexWrap: 'wrap' },
+  tab: {
+    padding: '8px 16px', borderRadius: 100, fontSize: 14, fontWeight: 700,
+    cursor: 'pointer', border: '2px solid', transition: 'all 0.15s',
+    fontFamily: "'Source Sans 3', sans-serif",
+  },
+  filterInputRow: { display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' },
+  filterInput: {
+    padding: '9px 14px', borderRadius: 12,
+    border: '2px solid #e2e8f0', background: '#F8FAFC',
+    color: '#0f172a', fontSize: 14, outline: 'none',
+    fontFamily: "'Source Sans 3', sans-serif", transition: 'all 0.15s',
+  },
+  clearBtn: {
+    padding: '9px 16px', borderRadius: 12,
+    border: '2px solid #fca5a5', background: '#FEE2E2',
+    color: '#dc2626', fontSize: 14, fontWeight: 700,
+    cursor: 'pointer', transition: 'all 0.15s',
+  },
+  resultCount: { fontSize: 13, color: '#94a3b8', fontWeight: 600, whiteSpace: 'nowrap' },
+
+  /* Cards */
+  cardList: { display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 960, margin: '0 auto' },
+
+  gCard: {
+    background: '#fff', borderRadius: 20,
+    border: '2px solid #e2e8f0',
+    padding: '22px 26px',
+    transition: 'all 0.2s',
+    animation: 'fg-fadein 0.3s ease both',
+  },
+
+  gCardTop: { display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8, marginBottom: 12 },
+  statusBadge: { display: 'inline-flex', alignItems: 'center', gap: 5, padding: '5px 12px', borderRadius: 100, fontSize: 13, fontWeight: 800, fontFamily: "'Nunito', sans-serif" },
+  badgeRow: { display: 'flex', gap: 8, flexWrap: 'wrap', flex: 1 },
+  platformBadge: { background: '#F1F5F9', color: '#334155', border: '1.5px solid #e2e8f0', padding: '4px 12px', borderRadius: 100, fontSize: 13, fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 5 },
+  catBadge: { padding: '4px 12px', borderRadius: 100, fontSize: 13, fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 },
+  cityBadge: { padding: '4px 10px', borderRadius: 100, fontSize: 12, fontWeight: 600, color: '#64748b', background: '#F8FAFC', border: '1.5px solid #e2e8f0' },
+  dateText: { fontSize: 12, color: '#94a3b8', fontWeight: 600, marginLeft: 'auto', whiteSpace: 'nowrap' },
+
+  gCardTitle: { fontFamily: "'Nunito', sans-serif", fontSize: 18, fontWeight: 800, color: '#0f172a', margin: '0 0 10px', letterSpacing: '-0.3px' },
+  gCardDesc:  { fontSize: 15, color: '#475569', lineHeight: 1.7, margin: '0 0 6px' },
+
+  expandBtn: { background: 'none', border: 'none', color: '#2563EB', fontSize: 13, fontWeight: 700, cursor: 'pointer', padding: '2px 0', marginBottom: 10 },
+
+  advocateNote: {
+    display: 'flex', gap: 12, alignItems: 'flex-start',
+    background: '#F0FDF4', border: '2px solid #86efac',
+    borderRadius: 14, padding: '14px 16px', margin: '12px 0',
+  },
+  advocateNoteTitle: { fontFamily: "'Nunito', sans-serif", fontSize: 14, fontWeight: 800, color: '#15803d', margin: '0 0 4px' },
+  advocateNoteText:  { fontSize: 14, color: '#166534', margin: 0, lineHeight: 1.55 },
+
+  gCardBottom: { display: 'flex', alignItems: 'center', gap: 12, marginTop: 16, paddingTop: 16, borderTop: '1.5px solid #f1f5f9', flexWrap: 'wrap' },
+
+  upvoteBtn: {
+    display: 'flex', alignItems: 'center', gap: 6,
+    padding: '9px 18px', borderRadius: 12,
+    border: '2px solid #e2e8f0', background: '#F8FAFC',
+    color: '#475569', fontSize: 14, fontWeight: 700,
+    cursor: 'pointer', transition: 'all 0.15s',
+  },
+  escalateBtn: {
+    padding: '9px 18px', borderRadius: 12,
+    border: '2px solid #fca5a5', background: '#FEE2E2',
+    color: '#dc2626', fontSize: 14, fontWeight: 700,
+    cursor: 'pointer', transition: 'all 0.15s',
+  },
+  resolveBtn: {
+    padding: '9px 18px', borderRadius: 12,
+    border: '2px solid #86efac', background: '#DCFCE7',
+    color: '#15803d', fontSize: 14, fontWeight: 700,
+    cursor: 'pointer', transition: 'all 0.15s',
+  },
+
+  /* Empty / Loading / Error */
+  emptyState: { textAlign: 'center', padding: '60px 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 },
+  spinnerLg:  { width: 40, height: 40, borderRadius: '50%', border: '4px solid #e2e8f0', borderTopColor: '#2563EB', display: 'inline-block', marginBottom: 12 },
+  errorBox:   { display: 'flex', alignItems: 'center', gap: 12, background: '#FEE2E2', border: '2px solid #fca5a5', borderRadius: 16, padding: '18px 22px', maxWidth: 960, margin: '0 auto 20px' },
+  retryBtn:   { padding: '8px 20px', borderRadius: 10, border: '2px solid #fca5a5', background: '#fff', color: '#dc2626', fontSize: 14, fontWeight: 700, cursor: 'pointer', marginLeft: 'auto' },
+};
+
+/* ─────────────────────────────────────────
+   CSS
+───────────────────────────────────────── */
+const CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  @keyframes fg-fadein { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fg-spin   { to{transform:rotate(360deg)} }
+
+  .fg-fadein     { animation: fg-fadein 0.3s ease both; }
+  .fg-spinner    { animation: fg-spin 0.7s linear infinite; }
+  .fg-spinner-lg { animation: fg-spin 0.9s linear infinite; }
+
+  .fg-input:focus {
+    border-color: #2563EB !important;
+    box-shadow: 0 0 0 4px rgba(37,99,235,0.12) !important;
+    background: #EFF6FF !important;
+  }
+  .fg-textarea { padding-left: 16px !important; }
+  .fg-textarea:focus { padding-left: 16px !important; }
+
+  .fg-post-btn:hover   { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(37,99,235,0.45) !important; }
+  .fg-cancel-btn:hover { border-color: #2563EB !important; color: #2563EB !important; }
+  .fg-submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(37,99,235,0.45) !important; }
+  .fg-submit-btn:disabled { opacity: 0.65; cursor: not-allowed !important; }
+
+  .fg-pill-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .fg-tab:hover      { background: #EFF6FF !important; color: #1d4ed8 !important; border-color: #93c5fd !important; }
+
+  .fg-filter-input:focus { border-color: #2563EB !important; box-shadow: 0 0 0 3px rgba(37,99,235,0.1) !important; }
+  .fg-clear-btn:hover    { background: #dc2626 !important; color: #fff !important; }
+  .fg-retry-btn:hover    { background: #dc2626 !important; color: #fff !important; }
+
+  .fg-gcard:hover { transform: translateY(-3px) !important; box-shadow: 0 16px 40px rgba(37,99,235,0.1) !important; }
+  .fg-expand-btn:hover  { text-decoration: underline; }
+  .fg-upvote-btn:hover  { background: #EFF6FF !important; border-color: #2563EB !important; color: #1d4ed8 !important; }
+  .fg-escalate-btn:hover{ background: #dc2626 !important; color: #fff !important; }
+  .fg-resolve-btn:hover { background: #15803d !important; color: #fff !important; }
+
+  @media (max-width: 768px) {
+    .fg-stats-row    { grid-template-columns: repeat(2,1fr) !important; }
+    .fg-filter-bar   { flex-direction: column !important; align-items: flex-start !important; }
+  }
+`;

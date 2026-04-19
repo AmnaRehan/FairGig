@@ -28,7 +28,7 @@ function AppRoutes() {
   const { user } = useAuth();
   return (
     <>
-      <Navbar />
+       <Navbar /> 
       <Routes>
 
 
@@ -43,6 +43,7 @@ function AppRoutes() {
           </ProtectedRoute>
         } />
         <Route path="/log-earnings" element={<ProtectedRoute roles={['worker']}><LogEarnings /></ProtectedRoute>} />
+        <Route path="/worker" element={<ProtectedRoute roles={['worker']}><WorkerDashboard /></ProtectedRoute>} />
         <Route path="/grievances" element={<ProtectedRoute><GrievanceBoard /></ProtectedRoute>} />
         <Route path="/certificate" element={<ProtectedRoute roles={['worker']}><Certificate /></ProtectedRoute>} />
         <Route path="/verify" element={<ProtectedRoute roles={['verifier', 'advocate']}><VerifierDashboard /></ProtectedRoute>} />
