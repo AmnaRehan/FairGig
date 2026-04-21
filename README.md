@@ -10,7 +10,7 @@ It includes:
 
 ## Live Links
 
-Frontend live link: add your deployed frontend URL here
+Frontend live link: https://fair-gig-mu.vercel.app/
 
 Live API services currently configured in the frontend:
 
@@ -155,7 +155,5 @@ For frontend deployment, you can use Vercel, Netlify, or Render Static Site and 
 
 FairGig is designed as a practical worker-first platform focused on transparency and rights protection for gig economy workers.
 
-## License
 
-Add your preferred license here (MIT, Apache-2.0, etc.).
 
